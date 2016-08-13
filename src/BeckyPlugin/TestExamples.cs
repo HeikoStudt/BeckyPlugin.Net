@@ -1,9 +1,9 @@
 ﻿using System;
-using BeckyPluginTest.BeckyApi;
-using BeckyPluginTest.WinApi;
+using BeckyPlugin.BeckyApi;
+using BeckyPlugin.WinApi;
 using NLog;
 
-namespace BeckyPluginTest {
+namespace BeckyPlugin {
     public class TestExamples {
         private static readonly ILogger Logger = LogManager.GetCurrentClassLogger();
 

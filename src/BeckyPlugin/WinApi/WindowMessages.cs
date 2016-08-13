@@ -2,7 +2,7 @@
 
 // ReSharper disable InconsistentNaming
 
-namespace BeckyPluginTest.WinApi
+namespace BeckyPlugin.WinApi
 {
     /// <summary>
     /// Windows Messages

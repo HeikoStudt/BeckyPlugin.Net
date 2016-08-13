@@ -1,11 +1,10 @@
 using System;
 using System.Runtime.CompilerServices;
 using System.Windows.Forms;
-using BeckyPluginTest.BeckyApi;
-using BeckyPluginTest.WinApi;
+using BeckyPlugin.BeckyApi;
 using NLog;
 
-namespace BeckyPluginTest
+namespace BeckyPlugin
 {
     /// <summary>
     ///   Note that BeckyPlugin must not use generics

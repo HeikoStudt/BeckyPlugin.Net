@@ -1,7 +1,7 @@
 using System;
 using System.Runtime.CompilerServices;
 
-namespace BeckyPluginTest.BeckyApi
+namespace BeckyPlugin.BeckyApi
 {
     /// <summary>
     ///   Alls methods being called by Becky! 2 into the plugin.

@@ -4,7 +4,7 @@ using BeckyPluginTest.Helpers;
 using NLog;
 using RGiesecke.DllExport;
 
-namespace BeckyPluginTest.BeckyApi
+namespace BeckyPlugin.BeckyApi
 {
     /// <summary>
     ///   Includes all the handlers for Becky API.

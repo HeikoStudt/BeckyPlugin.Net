@@ -2,7 +2,7 @@
 
 using System;
 
-namespace BeckyPluginTest
+namespace BeckyPlugin.BeckyApi
 {
 
     public enum BeckyMenu {

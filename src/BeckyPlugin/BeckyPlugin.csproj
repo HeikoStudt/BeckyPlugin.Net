@@ -7,8 +7,8 @@
     <ProjectGuid>{26BCEAA6-EA10-4222-BAB8-5E61B1466272}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>BeckyPluginTest</RootNamespace>
-    <AssemblyName>BeckyPluginTest</AssemblyName>
+    <RootNamespace>BeckyPlugin</RootNamespace>
+    <AssemblyName>BeckyPlugin</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />

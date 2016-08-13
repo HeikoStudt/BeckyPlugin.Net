@@ -4,7 +4,7 @@ using System.Text;
 
 // ReSharper disable InconsistentNaming
 
-namespace BeckyPluginTest.BeckyApi
+namespace BeckyPlugin.BeckyApi
 {
     /// <summary>
     ///   API of Becky (B2.exe)

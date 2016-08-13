@@ -1,4 +1,4 @@
-namespace BeckyPluginTest.Helpers
+namespace BeckyPlugin.Helpers
 {
     public static class PInvokeExtensions
     {

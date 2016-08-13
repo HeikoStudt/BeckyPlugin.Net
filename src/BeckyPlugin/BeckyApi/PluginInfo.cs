@@ -1,4 +1,4 @@
-namespace BeckyPluginTest.BeckyApi
+namespace BeckyPlugin.BeckyApi
 {
     /// <summary>
     ///   The information about the plugin given to Becky! 2
