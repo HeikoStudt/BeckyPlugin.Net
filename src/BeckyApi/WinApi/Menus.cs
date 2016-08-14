@@ -3,7 +3,7 @@ using System.Runtime.InteropServices;
 
 // ReSharper disable InconsistentNaming
 
-namespace BeckyPlugin.WinApi
+namespace BeckyApi.WinApi
 {
     public class Menus
     {

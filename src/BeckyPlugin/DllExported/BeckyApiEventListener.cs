@@ -1,10 +1,14 @@
 ﻿using System;
+using System.IO;
+using System.Reflection;
 using System.Runtime.InteropServices;
-using BeckyPluginTest.Helpers;
+using BeckyPlugin.Helpers;
+using BeckyPlugin.PluginListener;
 using NLog;
 using RGiesecke.DllExport;
+// ReSharper disable InconsistentNaming
 
-namespace BeckyPlugin.BeckyApi
+namespace BeckyPlugin.DllExported
 {
     /// <summary>
     ///   Includes all the handlers for Becky API.
@@ -17,11 +21,73 @@ namespace BeckyPlugin.BeckyApi
     ///   I did not implement BKC_OnRequestResource and BKC_OnRequestResource2
     ///   as only one plugin should implement at the same time. I would need to
     ///   have a non-null return value for ignoring me.
+    /// 
+    ///   Important: BeckyApiEventListener must not use any generics as the DllExport
+    ///     will not work.
+    /// 
+    ///   Important: BeckyApiEventListener is the main entry point and therefore
+    ///     must NOT reference any library before the static initializer could add 
+    ///     the AssemblyResolve hooks (at least until Becky! 2 adds the library 
+    ///     pathes itself).
     /// </remarks>
     public class BeckyApiEventListener
     {
-        private static readonly ILogger Logger = LogManager.GetCurrentClassLogger();
-        private static readonly IBeckyPlugin Listener = new BeckyPlugin();
+        private static readonly ILogger Logger;
+        private static readonly IBeckyPlugin Listener;
+
+        static BeckyApiEventListener()
+        {
+            // Hack: Search for libraries and resources in the same folder of this DLL
+            // ./ and ./AssemblyName/*; so it searches in plugins/* and plugins/PluginName/*
+            AppDomain currentDomain = AppDomain.CurrentDomain;
+            currentDomain.AssemblyResolve += LoadFromSameFolder;
+            currentDomain.AssemblyResolve += LoadFromAssemblyNameSubFolder;
+            Logger = LogManager.GetCurrentClassLogger();
+            Listener = new BeckyPlugin();
+        }
+
+        /* Will not work, as we did not define DllMain for the dll.
+        [DllExport("BKC_OnStart", CallingConvention.Winapi)]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        public static bool DllMain(IntPtr hinstDLL, DllMainReason fdwReason, IntPtr lpvReserved)
+        {
+            switch (fdwReason)
+            {
+                case DllMainReason.DLL_PROCESS_ATTACH:
+                    return true; // otherwise it fails
+                case DllMainReason.DLL_PROCESS_DETACH:
+                case DllMainReason.DLL_THREAD_ATTACH:
+                case DllMainReason.DLL_THREAD_DETACH:
+                    return true;
+            }
+            return true;
+        }
+
+        public enum DllMainReason
+        {
+            /// <summary>
+            ///   The DLL is being unloaded from the virtual address space of the calling process because it was loaded unsuccessfully or the reference count has reached zero (the processes has either terminated or called FreeLibrary one time for each time it called LoadLibrary).
+            ///   The lpReserved parameter indicates whether the DLL is being unloaded as a result of a FreeLibrary call, a failure to load, or process termination.
+            ///   The DLL can use this opportunity to call the TlsFree function to free any TLS indices allocated by using TlsAlloc and to free any thread local data.
+            ///   Note that the thread that receives the DLL_PROCESS_DETACH notification is not necessarily the same thread that received the DLL_PROCESS_ATTACH notification.
+            /// </summary>
+            DLL_PROCESS_DETACH = 0,
+            /// <summary>
+            ///   The DLL is being loaded into the virtual address space of the current process as a result of the process starting up or as a result of a call to LoadLibrary. DLLs can use this opportunity to initialize any instance data or to use the TlsAlloc function to allocate a thread local storage (TLS) index.
+            ///   The lpReserved parameter indicates whether the DLL is being loaded statically or dynamically.
+            /// </summary>
+            DLL_PROCESS_ATTACH = 1,
+            /// <summary>
+            ///   The current process is creating a new thread. When this occurs, the system calls the entry-point function of all DLLs currently attached to the process. The call is made in the context of the new thread. DLLs can use this opportunity to initialize a TLS slot for the thread. A thread calling the DLL entry-point function with DLL_PROCESS_ATTACH does not call the DLL entry-point function with DLL_THREAD_ATTACH.
+            ///   Note that a DLL's entry-point function is called with this value only by threads created after the DLL is loaded by the process. When a DLL is loaded using LoadLibrary, existing threads do not call the entry-point function of the newly loaded DLL.
+            /// </summary>
+            DLL_THREAD_ATTACH = 2,
+            /// <summary>
+            ///   A thread is exiting cleanly. If the DLL has stored a pointer to allocated memory in a TLS slot, it should use this opportunity to free the memory. The system calls the entry-point function of all currently loaded DLLs with this value. The call is made in the context of the exiting thread.
+            /// </summary>
+            DLL_THREAD_DETACH = 3,
+        }*/
+
 
         [DllExport("BKC_OnStart", CallingConvention.Winapi)]
         public static int BKC_OnStart() {
@@ -40,9 +106,9 @@ namespace BeckyPlugin.BeckyApi
         public static int BKC_OnExit() {
             if (Listener.IsDisabled) return 0;
             try { 
-            Logger.Info("BKC_OnExit");
-            bool allowed = Listener.OnExit();
-            return allowed ? 0 : -1; // Return -1 if you don't want to quit.
+                Logger.Info("BKC_OnExit");
+                bool allowed = Listener.OnExit();
+                return allowed ? 0 : -1; // Return -1 if you don't want to quit.
             } catch (Exception e) {
                 Listener.GotUnhandledException(e);
                 return 0;
@@ -54,8 +120,8 @@ namespace BeckyPlugin.BeckyApi
             if (Listener.IsDisabled) return 0;
 
             try { 
-            Logger.Info("BKC_OnMenuInit for {0}", nType);
-            Listener.OnMenuInit(hWnd, hMenu, nType);
+                Logger.Info("BKC_OnMenuInit for {0}", nType);
+                Listener.OnMenuInit(hWnd, hMenu, nType);
             } catch (Exception e) {
                 Listener.GotUnhandledException(e);
             }
@@ -67,8 +133,8 @@ namespace BeckyPlugin.BeckyApi
             if (Listener.IsDisabled) return 0;
 
             try { 
-            Logger.Info("BKC_OnOpenFolder for {0}", lpFolderId);
-            Listener.OnOpenFolder(lpFolderId);
+                Logger.Info("BKC_OnOpenFolder for {0}", lpFolderId);
+                Listener.OnOpenFolder(lpFolderId);
             } catch (Exception e) {
                 Listener.GotUnhandledException(e);
             }
@@ -80,8 +146,8 @@ namespace BeckyPlugin.BeckyApi
             if (Listener.IsDisabled) return 0;
 
             try { 
-            Logger.Info("BKC_OnOpenMail for {0}", lpMailId);
-            Listener.OnOpenMail(lpMailId);
+                Logger.Info("BKC_OnOpenMail for {0}", lpMailId);
+                Listener.OnOpenMail(lpMailId);
             } catch (Exception e) {
                 Listener.GotUnhandledException(e);
             }
@@ -93,8 +159,8 @@ namespace BeckyPlugin.BeckyApi
             if (Listener.IsDisabled) return 0;
 
             try { 
-            Logger.Info("BKC_OnEveryMinute");
-            Listener.OnEveryMinute();
+                Logger.Info("BKC_OnEveryMinute");
+                Listener.OnEveryMinute();
             } catch (Exception e) {
                 Listener.GotUnhandledException(e);
             }
@@ -105,9 +171,9 @@ namespace BeckyPlugin.BeckyApi
         public static int BKC_OnOpenCompose(IntPtr hWnd, BeckyComposeMode nMode) {
             if (Listener.IsDisabled) return 0;
 
-            try { 
-            Logger.Info("BKC_OnEveryMinute");
-            Listener.OnOpenCompose(hWnd, nMode);
+            try {
+                Logger.Info("BKC_OnOpenCompose for {0}", nMode);
+                Listener.OnOpenCompose(hWnd, nMode);
             } catch (Exception e) {
                 Listener.GotUnhandledException(e);
             }
@@ -119,8 +185,8 @@ namespace BeckyPlugin.BeckyApi
             if (Listener.IsDisabled) return 0;
 
             try { 
-            Logger.Info("BKC_OnOutgoing for {0}", nMode);
-            bool allowed = Listener.OnOutgoing(hWnd, nMode);
+                Logger.Info("BKC_OnOutgoing for {0}", nMode);
+                bool allowed = Listener.OnOutgoing(hWnd, nMode);
             return allowed ? 0 : -1; // Return -1 if you want to cancel the operation.
             } catch (Exception e) {
                 Listener.GotUnhandledException(e);
@@ -220,16 +286,16 @@ namespace BeckyPlugin.BeckyApi
 
         [DllExport("BKC_OnPlugInInfo", CallingConvention.Winapi)]
         public static int BKC_OnPlugInInfo(ref TagBkPlugininfo lpPlugInInfo) {
-            if (Listener.IsDisabled) return 0; //TODO: rethink whether we should let this go though anyway
-
             try { 
                 Logger.Info("BKC_OnPlugInInfo");
-                var pluginInfo = Listener?.OnPlugInInfo();
+                var pluginInfo = Listener.OnPlugInInfo();
                 if (pluginInfo == null) {
-                    throw new NotImplementedException("You have to set event OnPlugInInfo and return not-null.");
+                    throw new InvalidDataException(
+                        "You have to set event OnPlugInInfo and return not-null.");
                 }
                 if (string.IsNullOrWhiteSpace(pluginInfo.PluginName) || string.IsNullOrWhiteSpace(pluginInfo.Vendor)) {
-                    throw new NotImplementedException("PlugInInfo need to set name and vendor of the plugin.");
+                    throw new InvalidDataException(
+                        "PlugInInfo need to set name and vendor of the plugin.");
                 }
                 lpPlugInInfo.szPlugInName = pluginInfo.PluginName.ToCharArray(80);
                 lpPlugInInfo.szVendor = pluginInfo.Vendor.ToCharArray(80);
@@ -327,6 +393,43 @@ namespace BeckyPlugin.BeckyApi
                 lppParam = null;
                 return 0;
             }
+        }
+
+
+        /// <summary>
+        ///   Tries to find the assembly in the folder where the current assembly resides.
+        ///   <see cref="http://stackoverflow.com/questions/1373100/how-to-add-folder-to-assembly-search-path-at-runtime-in-net" />
+        /// </summary>
+        /// <returns></returns>
+        static Assembly LoadFromSameFolder(object sender, ResolveEventArgs args)
+        {
+            Logger.Info("Try LoadFromSameFolder: " + args.Name);
+            string searchedAssemblyName = new AssemblyName(args.Name).Name + ".dll";
+            var path = Path.GetDirectoryName(typeof(BeckyApiEventListener).Assembly.Location);
+            if (path == null) {
+                return null;
+            }
+            string assemblyPath = Path.Combine(
+                path,
+                searchedAssemblyName);
+            if (!File.Exists(assemblyPath)) return null;
+            return Assembly.LoadFrom(assemblyPath);
+        }
+
+        static Assembly LoadFromAssemblyNameSubFolder(object sender, ResolveEventArgs args)
+        {
+            Logger.Info("Try LoadFromAssemblyNameSubFolder: " + args.Name);
+            string searchedAssemblyName = new AssemblyName(args.Name).Name + ".dll";
+            var path = Path.GetDirectoryName(typeof(BeckyApiEventListener).Assembly.Location);
+            if (path == null) {
+                return null;
+            }
+            string assemblyPath = Path.Combine(
+                path,
+                typeof(BeckyApiEventListener).Assembly.GetName().Name, 
+                searchedAssemblyName);
+            if (!File.Exists(assemblyPath)) return null;
+            return Assembly.LoadFrom(assemblyPath);
         }
     }
 }

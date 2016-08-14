@@ -62,23 +62,28 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DllExported\BeckyBitmap.cs" />
+    <Compile Include="DllExported\BeckyComposeMode.cs" />
+    <Compile Include="DllExported\BeckyDropEffect.cs" />
+    <Compile Include="DllExported\BeckyFilter.cs" />
+    <Compile Include="DllExported\BeckyIcon.cs" />
+    <Compile Include="DllExported\BeckyOnSend.cs" />
+    <Compile Include="DllExported\BeckyOutgoingMode.cs" />
+    <Compile Include="DllExported\BeckySharedEnums.cs" />
+    <Compile Include="DllExported\BeckyShiftMode.cs" />
+    <Compile Include="DllExported\BeckyToolbar.cs" />
+    <Compile Include="Helpers\GetAssemblyInformation.cs" />
     <Compile Include="TestExamples.cs" />
-    <Compile Include="WinApi\WindowMessages.cs" />
-    <Compile Include="BeckyApi\CallsIntoBecky.cs" />
-    <Compile Include="BeckyApi\BeckyEnums.cs" />
     <Compile Include="BeckyPlugin.cs" />
-    <Compile Include="BeckyApi\BeckyApiEventListener.cs" />
-    <Compile Include="BeckyApi\IBeckyPlugin.cs" />
-    <Compile Include="Helpers\PInvokeExtensions.cs" />
+    <Compile Include="DllExported\BeckyApiEventListener.cs" />
+    <Compile Include="PluginListener\IBeckyPlugin.cs" />
+    <Compile Include="Helpers\ToCharArrayExtension.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="BeckyApi\PluginInfo.cs" />
-    <Compile Include="WinApi\Menus.cs" />
-    <Compile Include="WinApi\Misc.cs" />
+    <Compile Include="PluginListener\PluginInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-    <None Include="BeckyApi\B2PinSDK-26400.zip" />
-    <None Include="dumbin.bat" />
+    <None Include="dumpbin.bat" />
     <None Include="nlog.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
@@ -86,6 +91,13 @@
       <SubType>Designer</SubType>
     </None>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\BeckyApi\BeckyApi.csproj">
+      <Project>{c56c444e-6e34-45c2-aa94-2d3c9ba850eb}</Project>
+      <Name>BeckyApi</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="../packages/UnmanagedExports.1.2.7/tools/RGiesecke.DllExport.targets" Condition="Exists('../packages/UnmanagedExports.1.2.7/tools/RGiesecke.DllExport.targets')" />

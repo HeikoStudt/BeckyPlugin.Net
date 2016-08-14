@@ -1,6 +1,6 @@
 namespace BeckyPlugin.Helpers
 {
-    public static class PInvokeExtensions
+    public static class ToCharArrayExtension
     {
         /// <summary>
         ///   Ensures the chararray size arrSize on str (adding \0 or cutting).

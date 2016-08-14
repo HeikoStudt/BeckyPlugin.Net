@@ -1,7 +1,8 @@
 using System;
 using System.Runtime.CompilerServices;
+using BeckyPlugin.DllExported;
 
-namespace BeckyPlugin.BeckyApi
+namespace BeckyPlugin.PluginListener
 {
     /// <summary>
     ///   Alls methods being called by Becky! 2 into the plugin.

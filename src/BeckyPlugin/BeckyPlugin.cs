@@ -1,19 +1,21 @@
 using System;
 using System.Runtime.CompilerServices;
 using System.Windows.Forms;
-using BeckyPlugin.BeckyApi;
+using BeckyPlugin.DllExported;
+using BeckyPlugin.Helpers;
+using BeckyPlugin.PluginListener;
 using NLog;
+using BeckyAction = BeckyApi.BeckyAction;
+using BeckyMenu = BeckyApi.BeckyMenu;
+
 
 namespace BeckyPlugin
 {
-    /// <summary>
-    ///   Note that BeckyPlugin must not use generics
-    /// </summary>
     public class BeckyPlugin : IBeckyPlugin
     {
         private static readonly ILogger Logger = LogManager.GetCurrentClassLogger();
 
-        private readonly CallsIntoBecky _callsIntoBecky = new CallsIntoBecky(); //TODO: structuremap?
+        private readonly BeckyApi.CallsIntoBecky _callsIntoBecky = new BeckyApi.CallsIntoBecky(); //TODO: structuremap?
 
 
         public void OnEveryMinute() {
@@ -22,10 +24,10 @@ namespace BeckyPlugin
 
         public PluginInfo OnPlugInInfo() {
             return new PluginInfo {
-                PluginName = "Becky C# Plugin",
-                Vendor = "HeikoStudt",
-                Version = "0.0.0.1",
-                Description = "Becky Plugin Description",
+                PluginName = GetAssemblyInformation.Title,
+                Vendor = GetAssemblyInformation.Vendor,
+                Version = GetAssemblyInformation.Version.ToString(),
+                Description = GetAssemblyInformation.Description,
             };
         }
 
@@ -58,8 +60,8 @@ namespace BeckyPlugin
             return false;
         }
 
-        public BeckyFilter OnBeforeFilter2(string lpMessage, string lpMailBox, out BeckyAction action, out string actionParam) {
-            action = BeckyAction.ACTION_NOTHING;
+        public BeckyFilter OnBeforeFilter2(string lpMessage, string lpMailBox, out DllExported.BeckyAction action, out string actionParam) {
+            action = DllExported.BeckyAction.ACTION_NOTHING;
             actionParam = null;
             return BeckyFilter.BKC_FILTER_DEFAULT;
         }
@@ -72,25 +74,25 @@ namespace BeckyPlugin
             return true;
         }
         
-        public void OnMenuInit(IntPtr hWnd, IntPtr hMenu, BeckyMenu nType) {
+        public void OnMenuInit(IntPtr hWnd, IntPtr hMenu, DllExported.BeckyMenu nType) {
             switch (nType) {
-                case BeckyMenu.BKC_MENU_MAIN:
+                case DllExported.BeckyMenu.BKC_MENU_MAIN:
 
                     // Test code is invoked
                     new TestExamples(_callsIntoBecky)
                         .OnMainMenuInit(hWnd, hMenu, nType);
 
                     break;
-                case BeckyMenu.BKC_MENU_LISTVIEW:
+                case DllExported.BeckyMenu.BKC_MENU_LISTVIEW:
                     break;
-                case BeckyMenu.BKC_MENU_TREEVIEW:
-                case BeckyMenu.BKC_MENU_MSGVIEW:
-                case BeckyMenu.BKC_MENU_MSGEDIT:
+                case DllExported.BeckyMenu.BKC_MENU_TREEVIEW:
+                case DllExported.BeckyMenu.BKC_MENU_MSGVIEW:
+                case DllExported.BeckyMenu.BKC_MENU_MSGEDIT:
                     break;
-                case BeckyMenu.BKC_MENU_COMPOSE:
+                case DllExported.BeckyMenu.BKC_MENU_COMPOSE:
                     break;
-                case BeckyMenu.BKC_MENU_COMPEDIT:
-                case BeckyMenu.BKC_MENU_COMPREF:
+                case DllExported.BeckyMenu.BKC_MENU_COMPEDIT:
+                case DllExported.BeckyMenu.BKC_MENU_COMPREF:
                     break;
             }
         }

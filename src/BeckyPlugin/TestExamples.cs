@@ -1,7 +1,9 @@
 ﻿using System;
-using BeckyPlugin.BeckyApi;
-using BeckyPlugin.WinApi;
+using BeckyApi;
+using BeckyApi.WinApi;
 using NLog;
+using BeckyMenu = BeckyPlugin.DllExported.BeckyMenu;
+
 
 namespace BeckyPlugin {
     public class TestExamples {
@@ -91,14 +93,14 @@ namespace BeckyPlugin {
             Logger.Info("{0} | {1} | {2} | {3} | {4}", res, res?.Main, res?.Tree, res?.List, res?.View);
         }
 
-        public void OnMainMenuInit(IntPtr hWnd, IntPtr hMenu, BeckyMenu nType)
+        public void OnMainMenuInit(IntPtr hWnd, IntPtr hMenu, DllExported.BeckyMenu nType)
         {
             {
                 IntPtr hSubMenu = Menus.GetSubMenu(hMenu, 4);
                 Menus.AppendMenu(hSubMenu, Menus.MenuFlags.MF_SEPARATOR, 0, null);
 
 
-                var nId = CallsIntoBecky.RegisterCommand("Test", nType, CmdTest);
+                var nId = CallsIntoBecky.RegisterCommand("Test", (BeckyApi.BeckyMenu)nType, CmdTest);
                 CallsIntoBecky.RegisterUICallback(nId, CmdTestUi);
                 Menus.AppendMenu(hSubMenu, Menus.MenuFlags.MF_STRING, nId, "Test");
 
