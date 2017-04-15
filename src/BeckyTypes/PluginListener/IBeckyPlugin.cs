@@ -1,8 +1,8 @@
 using System;
 using System.Runtime.CompilerServices;
-using BeckyPlugin.DllExported;
+using BeckyTypes.ExportEnums;
 
-namespace BeckyPlugin.PluginListener
+namespace BeckyTypes.PluginListener
 {
     /// <summary>
     ///   Alls methods being called by Becky! 2 into the plugin.
@@ -82,7 +82,7 @@ namespace BeckyPlugin.PluginListener
         ///   You MUST specify at least szPlugInName and szVendor.
         ///   otherwise Becky! will silently ignore your plug-in.
         /// </returns>
-        PluginInfo OnPlugInInfo();
+        IPluginInfo OnPlugInInfo();
 
         /// <summary>
         /// Called when a compose windows is opened.

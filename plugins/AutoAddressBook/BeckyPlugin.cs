@@ -1,16 +1,13 @@
 using System;
 using System.Runtime.CompilerServices;
 using System.Windows.Forms;
-using BeckyPlugin.Helpers;
 using BeckyTypes.ExportEnums;
-using BeckyTypes.Helpers;
 using BeckyTypes.PluginListener;
 using NLog;
-using BeckyAction = BeckyApi.BeckyAction;
-using BeckyMenu = BeckyApi.BeckyMenu;
+using GetAssemblyInformation = BeckyTypes.Helpers.GetAssemblyInformation;
 
 
-namespace BeckyPlugin
+namespace AutoAddressBook
 {
     public class BeckyPlugin : IBeckyPlugin
     {
@@ -61,8 +58,8 @@ namespace BeckyPlugin
             return false;
         }
 
-        public BeckyFilter OnBeforeFilter2(string lpMessage, string lpMailBox, out BeckyTypes.ExportEnums.BeckyAction action, out string actionParam) {
-            action = BeckyTypes.ExportEnums.BeckyAction.ACTION_NOTHING;
+        public BeckyFilter OnBeforeFilter2(string lpMessage, string lpMailBox, out global::BeckyTypes.ExportEnums.BeckyAction action, out string actionParam) {
+            action = global::BeckyTypes.ExportEnums.BeckyAction.ACTION_NOTHING;
             actionParam = null;
             return BeckyFilter.BKC_FILTER_DEFAULT;
         }
@@ -75,25 +72,25 @@ namespace BeckyPlugin
             return true;
         }
         
-        public void OnMenuInit(IntPtr hWnd, IntPtr hMenu, BeckyTypes.ExportEnums.BeckyMenu nType) {
+        public void OnMenuInit(IntPtr hWnd, IntPtr hMenu, global::BeckyTypes.ExportEnums.BeckyMenu nType) {
             switch (nType) {
-                case BeckyTypes.ExportEnums.BeckyMenu.BKC_MENU_MAIN:
+                case global::BeckyTypes.ExportEnums.BeckyMenu.BKC_MENU_MAIN:
 
                     // Test code is invoked
-                    new TestExamples(_callsIntoBecky)
-                        .OnMainMenuInit(hWnd, hMenu, nType);
+                    //new TestExamples(_callsIntoBecky)
+                    //    .OnMainMenuInit(hWnd, hMenu, nType);
 
                     break;
-                case BeckyTypes.ExportEnums.BeckyMenu.BKC_MENU_LISTVIEW:
+                case global::BeckyTypes.ExportEnums.BeckyMenu.BKC_MENU_LISTVIEW:
                     break;
-                case BeckyTypes.ExportEnums.BeckyMenu.BKC_MENU_TREEVIEW:
-                case BeckyTypes.ExportEnums.BeckyMenu.BKC_MENU_MSGVIEW:
-                case BeckyTypes.ExportEnums.BeckyMenu.BKC_MENU_MSGEDIT:
+                case global::BeckyTypes.ExportEnums.BeckyMenu.BKC_MENU_TREEVIEW:
+                case global::BeckyTypes.ExportEnums.BeckyMenu.BKC_MENU_MSGVIEW:
+                case global::BeckyTypes.ExportEnums.BeckyMenu.BKC_MENU_MSGEDIT:
                     break;
-                case BeckyTypes.ExportEnums.BeckyMenu.BKC_MENU_COMPOSE:
+                case global::BeckyTypes.ExportEnums.BeckyMenu.BKC_MENU_COMPOSE:
                     break;
-                case BeckyTypes.ExportEnums.BeckyMenu.BKC_MENU_COMPEDIT:
-                case BeckyTypes.ExportEnums.BeckyMenu.BKC_MENU_COMPREF:
+                case global::BeckyTypes.ExportEnums.BeckyMenu.BKC_MENU_COMPEDIT:
+                case global::BeckyTypes.ExportEnums.BeckyMenu.BKC_MENU_COMPREF:
                     break;
             }
         }

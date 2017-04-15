@@ -1,5 +1,5 @@
 // ReSharper disable InconsistentNaming
-namespace BeckyPlugin.DllExported
+namespace BeckyTypes.ExportEnums
 {
     public enum BeckyOutgoingMode {
         /// <summary>

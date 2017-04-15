@@ -2,7 +2,7 @@
 using BeckyApi;
 using BeckyApi.WinApi;
 using NLog;
-using BeckyMenu = BeckyPlugin.DllExported.BeckyMenu;
+using BeckyMenu = BeckyTypes.ExportEnums.BeckyMenu;
 
 
 namespace BeckyPlugin {
@@ -23,8 +23,8 @@ namespace BeckyPlugin {
             //Microsoft.Win32.SafeHandles
             //GetStatus();
 
-            //var compose = @"mailto:mail@address?X-Becky-Attachment=C:\temp\BeckyPluginTest\bk27300\Plugins\log.txt";
-            //var hwnd = CallsIntoBecky.ComposeMail(compose);
+            var compose = @"x-becky-mailto:mail@address?X-Becky-Attachment=C:\temp\BeckyPluginTest\bk27300\Plugins\log.txt";
+            var hwnd = CallsIntoBecky.ComposeMail(compose);
 
 
         }
@@ -93,7 +93,7 @@ namespace BeckyPlugin {
             Logger.Info("{0} | {1} | {2} | {3} | {4}", res, res?.Main, res?.Tree, res?.List, res?.View);
         }
 
-        public void OnMainMenuInit(IntPtr hWnd, IntPtr hMenu, DllExported.BeckyMenu nType)
+        public void OnMainMenuInit(IntPtr hWnd, IntPtr hMenu, BeckyMenu nType)
         {
             {
                 IntPtr hSubMenu = Menus.GetSubMenu(hMenu, 4);

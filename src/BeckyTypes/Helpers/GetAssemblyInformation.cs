@@ -2,11 +2,11 @@
 using System.Linq;
 using System.Reflection;
 
-namespace BeckyPlugin.Helpers
+namespace BeckyTypes.Helpers
 {
     public static class GetAssemblyInformation
     {
-        public static readonly Assembly Reference = typeof(GetAssemblyInformation).Assembly;
+        public static readonly Assembly Reference = Assembly.GetCallingAssembly();
         public static readonly Version Version = Reference.GetName().Version;
 
         public static string Description

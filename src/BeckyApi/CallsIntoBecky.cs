@@ -446,10 +446,9 @@ namespace BeckyApi
         }
 
         /// <summary>
-        /// You can modify only the following bits.
-        /// MESSAGE_READ, MESSAGE_FORWARDED, MESSAGE_REPLIED
-        /// Other bits are simply ignored.
-        /// TODO seems to kill the flags somehow (returning -2147418104 and such)
+        ///   You can modify only the following bits.
+        ///   MESSAGE_READ, MESSAGE_FORWARDED, MESSAGE_REPLIED
+        ///   Other bits are simply ignored.
         /// </summary>
         /// <remarks>
         ///   Becky! Ver.2.00.06 or higher.
@@ -464,19 +463,20 @@ namespace BeckyApi
         }
 
         /// <summary>
-        /// You can use "mailto" URL scheme defined in RFC2368.
-        /// The following headers can be also used for special purpose with Becky!.
+        /// You can use the "mailto" URL scheme defined in RFC2368.
+        /// 
+        /// You can use the special "x-becky-mailto" URL scheme for
+        /// the following special purpose headers with Becky! 2.
+        /// This has once been changed for security reasons.
         /// 
         /// X-Becky-Attachment: full path name of the file you want to attach.
         /// X-Becky-Template: full path name of the template file you want to apply.
         /// 
-        /// <example>bka.ComposeMail("mailto:mail@address?X-Becky-Attachment=C:\test.txt");</example>
+        /// <example>bka.ComposeMail("x-becky-mailto:mail@address?X-Becky-Attachment=C:\test.txt");</example>
         /// 
         /// You should URL-encode the data if it contains one of the following characters.
         /// %,?,&amp;,=,~, and less or equal than 0x20
-        /// <example>bka.ComposeMail("mailto:Name%20&lt;mail@address>");</example>
-        /// 
-        /// TODO: the X-Becky-Attachment -Example above does not work currently
+        /// <example>bka.ComposeMail("x-becky-mailto:Name%20&lt;mail@address>");</example>
         /// </summary>
         /// 
         /// <param name="lpURL">"mailto:" URL string to be passed to an outgoing message.
