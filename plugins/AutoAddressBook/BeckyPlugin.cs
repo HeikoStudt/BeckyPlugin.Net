@@ -1,8 +1,11 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Windows.Forms;
 using BeckyTypes.ExportEnums;
 using BeckyTypes.PluginListener;
+using MimeKit;
 using NLog;
 using GetAssemblyInformation = BeckyTypes.Helpers.GetAssemblyInformation;
 
@@ -41,10 +44,25 @@ namespace AutoAddressBook
         }
 
         public void OnRetrieve(string lpMessage, string lpMailId) {
+            
         }
 
         public BeckyOnSend OnSend(string lpMessage) {
+            var message = MimeMessage.Load(lpMessage);
+            var allAddresses = GetAllAddressesSentTo(message);
+            foreach (var address in allAddresses) {
+                var emailaddress = (address as MailboxAddress)?.Address;
+                var name = address.Name;
+            }
             return BeckyOnSend.NOTHING;
+        }
+
+        private static IEnumerable<MailboxAddress> GetAllAddressesSentTo(MimeMessage message) {
+            var to = message.To.Mailboxes;
+            var cc = message.Cc.Mailboxes;
+            var bcc = message.Bcc.Mailboxes;
+            var rcc = message.ResentCc.Mailboxes;
+            return to.Concat(cc).Concat(bcc).Concat(rcc); ;
         }
 
         public void OnFinishRetrieve(int nNumber) {
@@ -100,7 +118,7 @@ namespace AutoAddressBook
         }
 
         public void OnOpenMail(string lpMailId) {
-
+            //var lpMessage = _callsIntoBecky.GetHeader(lpMailId) + "\r\n";
         }
 
 
