@@ -4,7 +4,6 @@ using BeckyTypes.ExportEnums;
 using BeckyTypes.Helpers;
 using BeckyTypes.PluginListener;
 using NLog;
-using RGiesecke.DllExport;
 
 namespace BeckyPlugin {
     /// <summary>
