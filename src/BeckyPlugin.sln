@@ -17,6 +17,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AutoAddressBook", "..\plugi
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BeckyTypes", "BeckyTypes\BeckyTypes.csproj", "{87F35097-FFB3-4B47-B34F-B652E23F1FFC}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Utilities", "Utilities\Utilities.csproj", "{8474A390-5807-4713-9FF9-16717A6B3E3F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,10 @@ Global
 		{87F35097-FFB3-4B47-B34F-B652E23F1FFC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{87F35097-FFB3-4B47-B34F-B652E23F1FFC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{87F35097-FFB3-4B47-B34F-B652E23F1FFC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8474A390-5807-4713-9FF9-16717A6B3E3F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8474A390-5807-4713-9FF9-16717A6B3E3F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8474A390-5807-4713-9FF9-16717A6B3E3F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8474A390-5807-4713-9FF9-16717A6B3E3F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -481,6 +481,7 @@ namespace BeckyApi
         /// 
         /// <param name="lpURL">"mailto:" URL string to be passed to an outgoing message.
         ///   <example>e.g. "mailto:mail@address"</example>
+        ///   <example>e.g. "x-becky-mailto:mail@address"</example>
         /// </param>
         /// <returns>Window handle of the composing window.</returns>
         public IntPtr ComposeMail(string lpURL) {

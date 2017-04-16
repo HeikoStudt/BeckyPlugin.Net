@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Windows.Forms;
@@ -7,6 +8,7 @@ using BeckyTypes.ExportEnums;
 using BeckyTypes.PluginListener;
 using MimeKit;
 using NLog;
+using Utilities;
 using GetAssemblyInformation = BeckyTypes.Helpers.GetAssemblyInformation;
 
 
@@ -48,14 +50,44 @@ namespace AutoAddressBook
         }
 
         public BeckyOnSend OnSend(string lpMessage) {
+            string dataFolder = _callsIntoBecky.GetDataFolder();
+            Logger.Info("Datafolder: " + dataFolder);
+            var emailAddressesInB2AddressBook = GetEmailAddresses(dataFolder).ToLookup(x => x);
+            
             var message = MimeMessage.Load(lpMessage);
             var allAddresses = GetAllAddressesSentTo(message);
-            foreach (var address in allAddresses) {
-                var emailaddress = (address as MailboxAddress)?.Address;
+
+            var newAddresses = allAddresses.Where(x => !emailAddressesInB2AddressBook.Contains(x.Address));
+            foreach (var address in newAddresses) {
+                var emailaddress = address.Address;
                 var name = address.Name;
+                Logger.Info("New address: " + emailaddress + " name: " + name);
             }
             return BeckyOnSend.NOTHING;
         }
+
+        private IEnumerable<string> GetEmailAddresses(string dataFolder) {
+            List<string> emailAddresses = new List<string>();
+            foreach (var vcf in BeckyApi.AddressBook.Helper.GetAllVcfFiles(dataFolder)) {
+                emailAddresses.AddRange(GetEmailAddressesVcf(vcf));
+            }
+            return emailAddresses;
+        }
+
+        private IEnumerable<string> GetEmailAddressesVcf(string vcfFile) {
+            // not quite correct as of encoding, but not bad as EMAIl is never encoded:
+            var lines = File.ReadAllLines(vcfFile);
+            foreach (string line in lines) {
+                //startswith is fast
+                if (line.StartsWith("EMAIL")) {
+                    //TODO: there seems to be a notion of "folding"
+                    string email = line.Substring(line.IndexOf(':') + 1);
+                    yield return email;
+                }
+            }
+        }
+
+        
 
         private static IEnumerable<MailboxAddress> GetAllAddressesSentTo(MimeMessage message) {
             var to = message.To.Mailboxes;

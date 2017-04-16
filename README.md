@@ -10,7 +10,7 @@ Additionally, it provides you with all the DllImport/PInvoke of the Becky! 2 API
 It gives you the opportunity of referencing arbitrary libraries as it provides you with an assembly loader able to gather the referenced .NET assemblies out of plugins/(assemblyname).
 
 # Existing plugins
- * [AutoAddressBook] (https://github.com/HeikoStudt/BeckyPlugin.Net/plugins/AutoAddressBook/)
+ * [AutoAddressBook] (https://github.com/HeikoStudt/BeckyPlugin.Net/tree/master/plugins/AutoAddressBook)
 
 # How to Use (old)
 First, you will have to provide your own plugin information in BeckyPlugin/Properties/AssemblyInfo.cs.
@@ -43,6 +43,7 @@ AssemblyDescription and AssemblyVersion are mapped as well.
 3. Install Nuget Packages (DllExports, NLog, ModuleInit.Fody) into project. 
 
 DllExports need to be set to x86 and "System.Runtime.Interop". If you have got problems, uninstall and restart Visual Studio.
+![Screenshot of the configure dialog of DllExport](https://github.com/HeikoStudt/BeckyPlugin.Net/tree/master/resources/DllExport_Configure.PNG)
 
 Note: You could be able to use UnmanagedExports instead as well, but it messes a bit with ModuleInit.Fody.
 
@@ -91,7 +92,8 @@ Use _callsIntoBecky as an object for API calls into Becky!.
 
   * BeckyTypes consists of types used for BeckyAPI and the plugin exporters
   * BeckyPluginTemplate is a template to copy files from and for the time being to test the API manually.
-  * BeckyApi is the callable API of B2.EXE
+  * BeckyApi is the callable API of B2.EXE and, as long as neccessary, file API for the AddressBook.
+  * Utilities for classes usable in many plugins (like IniFile)
   * AutoAddressBook is my first 'real' plugin, still in raw shape :)
 
 
