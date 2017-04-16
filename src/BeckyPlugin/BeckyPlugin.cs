@@ -6,8 +6,6 @@ using BeckyTypes.ExportEnums;
 using BeckyTypes.Helpers;
 using BeckyTypes.PluginListener;
 using NLog;
-using BeckyAction = BeckyApi.BeckyAction;
-using BeckyMenu = BeckyApi.BeckyMenu;
 
 
 namespace BeckyPlugin

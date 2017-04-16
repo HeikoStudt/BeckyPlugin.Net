@@ -1,5 +1,6 @@
 ﻿using System;
 using BeckyApi;
+using BeckyApi.Enums;
 using BeckyApi.WinApi;
 using NLog;
 using BeckyMenu = BeckyTypes.ExportEnums.BeckyMenu;
@@ -100,7 +101,7 @@ namespace BeckyPlugin {
                 Menus.AppendMenu(hSubMenu, Menus.MenuFlags.MF_SEPARATOR, 0, null);
 
 
-                var nId = CallsIntoBecky.RegisterCommand("Test", (BeckyApi.BeckyMenu)nType, CmdTest);
+                var nId = CallsIntoBecky.RegisterCommand("Test", (BeckyApi.Enums.BeckyMenu)nType, CmdTest);
                 CallsIntoBecky.RegisterUICallback(nId, CmdTestUi);
                 Menus.AppendMenu(hSubMenu, Menus.MenuFlags.MF_STRING, nId, "Test");
 

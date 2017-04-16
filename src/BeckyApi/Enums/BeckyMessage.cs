@@ -1,7 +1,8 @@
 ﻿using System;
+
 // ReSharper disable InconsistentNaming
 
-namespace BeckyApi
+namespace BeckyApi.Enums
 {
     [Flags]
     public enum BeckyMessage : uint {

@@ -41,12 +41,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AddressBook\Helper.cs" />
-    <Compile Include="BeckyCmdUI.cs" />
-    <Compile Include="BeckySharedEnums.cs" />
-    <Compile Include="BeckyMessage.cs" />
+    <Compile Include="Enums\BeckyCmdUI.cs" />
+    <Compile Include="Enums\BeckyMenu.cs" />
+    <Compile Include="Enums\BeckyAction.cs" />
+    <Compile Include="Enums\BeckyMessage.cs" />
     <Compile Include="CallsIntoBecky.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="TextMode.cs" />
+    <Compile Include="Enums\TextMode.cs" />
     <Compile Include="WinApi\Menus.cs" />
     <Compile Include="WinApi\Misc.cs" />
     <Compile Include="WinApi\WindowMessages.cs" />

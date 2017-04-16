@@ -1,5 +1,5 @@
 // ReSharper disable InconsistentNaming
-namespace BeckyApi
+namespace BeckyApi.Enums
 {
     public enum TextMode {
         /// <summary>
