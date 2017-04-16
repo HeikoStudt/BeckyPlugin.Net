@@ -16,6 +16,9 @@ ret
 }
      */
 
+    private static Assembly ThisAssembly {
+        get { return typeof(ModuleInitializer).Assembly; }
+    }
 
     /// <summary>
     /// Initializes the module.
@@ -24,41 +27,32 @@ ret
         // Search for libraries and resources in the same folder of this DLL
         // ./ and ./AssemblyName/*; so it searches in plugins/* and plugins/PluginName/*
         AppDomain currentDomain = AppDomain.CurrentDomain;
-        currentDomain.AssemblyResolve += LoadFromAssemblyNameSubFolder; // First
-        currentDomain.AssemblyResolve += LoadFromSameFolder;
-    }
-
-    private static Assembly ThisAssembly {
-        get { return typeof(ModuleInitializer).Assembly; }
+        currentDomain.AssemblyResolve += LoadFromSameAndAssemblyNameFolder;
     }
 
     /// <summary>
-    ///   Tries to find the assembly in the folder where the current assembly resides.
+    ///   Tries to find the assembly in the folder where the current assembly resides or a subfolder named as the assemblyname.
     ///   <see cref="http://stackoverflow.com/questions/1373100/how-to-add-folder-to-assembly-search-path-at-runtime-in-net" />
     /// </summary>
-    private static Assembly LoadFromSameFolder(object sender, ResolveEventArgs args) {
+    private static Assembly LoadFromSameAndAssemblyNameFolder(object sender, ResolveEventArgs args) {
         string searchedAssemblyName = new AssemblyName(args.Name).Name + ".dll";
         var path = Path.GetDirectoryName(ThisAssembly.Location);
         if (path == null) {
             return null;
         }
-        string assemblyPath = Path.Combine(path, searchedAssemblyName);
-        if (!File.Exists(assemblyPath)) return null;
-        return Assembly.LoadFrom(assemblyPath);
-    }
 
-    /// <summary>
-    ///   Tries to find the assembly in the same named subfolder where the current assembly resides with assemblyname.
-    ///   <see cref="http://stackoverflow.com/questions/1373100/how-to-add-folder-to-assembly-search-path-at-runtime-in-net" />
-    /// </summary>
-    private static Assembly LoadFromAssemblyNameSubFolder(object sender, ResolveEventArgs args) {
-        string searchedAssemblyName = new AssemblyName(args.Name).Name + ".dll";
-        var path = Path.GetDirectoryName(ThisAssembly.Location);
-        if (path == null) {
-            return null;
+        // First as most specialised
+        string assemblyNamePath = Path.Combine(path, ThisAssembly.GetName().Name, searchedAssemblyName);
+        if (File.Exists(assemblyNamePath)) {
+            return Assembly.LoadFrom(assemblyNamePath);
         }
-        string assemblyPath = Path.Combine(path, ThisAssembly.GetName().Name, searchedAssemblyName);
-        if (!File.Exists(assemblyPath)) return null;
-        return Assembly.LoadFrom(assemblyPath);
+
+        // some common library like NLog could be there, but having different versions....
+        string sameAssemblyPath = Path.Combine(path, searchedAssemblyName);
+        if (File.Exists(sameAssemblyPath)) {
+            return Assembly.LoadFrom(sameAssemblyPath);
+        }
+
+        return null;
     }
 }
