@@ -10,7 +10,7 @@ Additionally, it provides you with all the DllImport/PInvoke of the Becky! 2 API
 It gives you the opportunity of referencing arbitrary libraries as it provides you with an assembly loader able to gather the referenced .NET assemblies out of plugins/(assemblyname).
 
 # Existing plugins
- * [AutoAddressBook] (https://github.com/HeikoStudt/BeckyPlugin.Net/tree/master/plugins/AutoAddressBook)
+ * [AutoAddressBook](plugins/AutoAddressBook)
 
 # How to Use (old)
 First, you will have to provide your own plugin information in BeckyPlugin/Properties/AssemblyInfo.cs.
@@ -51,7 +51,7 @@ This assembly will be used for debugging information as those are lost while mod
 3. Install Nuget Packages (DllExports, NLog, ModuleInit.Fody) into plugin stub project.
 
 DllExports need to be set to x86 and "System.Runtime.Interop". If you have got problems, uninstall and restart Visual Studio.
-![Screenshot of the configure dialog of DllExport](https://github.com/HeikoStudt/BeckyPlugin.Net/tree/master/resources/DllExport_Configure.PNG)
+![Configuration dialog of DllExport](resources/DllExport_Configure.PNG)
 
 4. Add BeckyTypes, BeckyApi as project references. Do **not** add "BeckyPlugin" or any other plugin.
    Reference your new implementation project.
@@ -122,14 +122,14 @@ It would be very nice to open source your plugins as they might be swallowed by 
 
 
 # Acknowledges
-Becky! 2 is a software by Rimarts, Inc. http://rimarts.co.jp
+Becky! 2 is a software by [Rimarts, Inc.](http://rimarts.co.jp)
 
 This C# .NET SDK is a transcription of the official SDK (originally using version 2.64.0).
 
-The exported methods are using [RGiesecke.DllExport] (https://sites.google.com/site/robertgiesecke/Home/uploads/unmanagedexports) via its [Nuget package] (https://www.nuget.org/packages/UnmanagedExports/1.2.2.23707).
+The exported methods are using [RGiesecke.DllExport](https://sites.google.com/site/robertgiesecke/Home/uploads/unmanagedexports) via its [Nuget package](https://www.nuget.org/packages/UnmanagedExports/1.2.2.23707).
 
-Another possibility is a fork of above [DllExport] (https://github.com/3F/DllExport) which is quite harder (but more advanced).
+Another possibility is a fork of above [DllExport](https://github.com/3F/DllExport) which is quite harder (but more advanced).
 
-The module initializing is done via [ModuleInit.Fody] (https://www.nuget.org/packages/ModuleInit.Fody/).
+The module initializing is done via [ModuleInit.Fody](https://www.nuget.org/packages/ModuleInit.Fody/).
 
-For putting up some window and menu stuff, you can use the [Nuget Package of PInvoke] (https://github.com/AArnott/pinvoke). While most of Win32 APIs are still missing in the package, you can add those [Win32 APIs] (http://www.pinvoke.net) yourself.
+For putting up some window and menu stuff, you can use the [Nuget Package of PInvoke](https://github.com/AArnott/pinvoke). While most of Win32 APIs are still missing in the package, you can add those [Win32 APIs](http://www.pinvoke.net) yourself.
