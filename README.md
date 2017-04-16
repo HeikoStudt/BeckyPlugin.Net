@@ -33,27 +33,34 @@ For easier developement, add an Visual Studio "Tools:External Tool" to some copy
 
 1. Add a new plugin assembly project into /plugins folder having the same output assembly name as its folder name. (Sample: plugins/AutoAddressBook with AutoAddressBook.dll)
 
-Note: The plugin assembly name should not be a prefix of some other plugin if you like the automatisms of copy-and-start.ps1.
+  a) This assembly will be used for DllExport'ing the method stubs to Becky.
 
-2. Provide your own plugin information in BeckyPlugin/Properties/AssemblyInfo.cs.
+  b) Provide your own plugin information in /Properties/AssemblyInfo.cs.
+    
+	Here, the AssemblyTitle is mapped onto the plugin name and the AssemblyCompany is the "vendor" of the plugin.
+    AssemblyDescription and AssemblyVersion are mapped as well.
 
-Here, the AssemblyTitle is mapped onto the plugin name and the AssemblyCompany is the "vendor" of the plugin.
-AssemblyDescription and AssemblyVersion are mapped as well.
+	This is true only if you did not provide plugininfo yourself
 
-3. Install Nuget Packages (DllExports, NLog, ModuleInit.Fody) into project. 
+  c) The plugin assembly name should not be a prefix of some other plugin if you like the automatisms of copy-and-start.ps1.
+
+2. Add a new plugin implementation assembly project into /pluginimpl folder. (Sample pluginimpl/AutoAddressBookImpl)
+
+This assembly will be used for debugging information as those are lost while modifying the stub.
+
+3. Install Nuget Packages (DllExports, NLog, ModuleInit.Fody) into plugin stub project.
 
 DllExports need to be set to x86 and "System.Runtime.Interop". If you have got problems, uninstall and restart Visual Studio.
 ![Screenshot of the configure dialog of DllExport](https://github.com/HeikoStudt/BeckyPlugin.Net/tree/master/resources/DllExport_Configure.PNG)
 
-Note: You could be able to use UnmanagedExports instead as well, but it messes a bit with ModuleInit.Fody.
-
 4. Add BeckyTypes, BeckyApi as project references. Do **not** add "BeckyPlugin" or any other plugin.
+   Reference your new implementation project.
 
-5. Add System.Windows.Forms as assembly reference.
+5. Add System.Windows.Forms as assembly reference in both.
 
-6. Change processor architecture to x86 (aka 32 bit).
+6. Change processor architecture to x86 (aka 32 bit) in plugin stub.
 
-7. Copy over ModuleInitializer, BeckyApiEventListener and BeckyPlugin.cs
+7. Copy over ModuleInitializer and BeckyApiEventListener to plugin stub. Copy over BeckyPlugin.cs into implementation project.
 
 Change the namespace inside BeckyApiEventListener and BeckyPlugin accordingly.
 
@@ -66,6 +73,17 @@ Use _callsIntoBecky as an object for API calls into Becky!.
 10. modify and start copy-and-start.ps1; it will automatically deploy all plugins into becky and start b2.exe.
 
 11. Create a Readme.md, put it on GitHub and send me a nice postcard. :-)
+
+
+# How to debug my plugin?
+
+If you've followed my advice of dividing your plugin into a stub and an implementation project, 
+you can simply put a shortcut on "copy-and-start" (so starting becky) and then Debug->Attach to Process (B2.EXE).
+
+This is quite powerfull.
+
+Although, there is a PDB file for the plugin stub project, it does not match the DLL as fody and DllExport are messing the IL a bit.
+Probably the Fody.ModuleInit creates a new, unknown method which alters some hash or such.
 
 
 # Open ToDos

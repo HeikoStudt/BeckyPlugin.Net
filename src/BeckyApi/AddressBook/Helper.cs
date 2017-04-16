@@ -23,9 +23,25 @@ namespace BeckyApi.AddressBook {
             return result;
         }
 
+        /// <summary>
+        ///   The "final" address book pathes of all the becky type (vcard-type) address books.
+        /// </summary>
         public static IEnumerable<string> GetBeckyAddressBookPathes(string dataFolder) {
-            foreach (var addrBookInitial in Directory.EnumerateDirectories(dataFolder)) {
+            var addressBooksBaseFolder = Path.Combine(dataFolder, "AddrBook");
+            // all becky type address books start with an @
+            foreach (var addrBookInitial in Directory.EnumerateDirectories(addressBooksBaseFolder, "@*")) {
                 yield return FollowAddressIniPath(addrBookInitial);
+            }
+        }
+
+        /// <summary>
+        ///   The "final" address book pathes of all the ldap type address books.
+        /// </summary>
+        public static IEnumerable<string> GetLdapAddressBookPathes(string dataFolder) {
+            var addressBooksBaseFolder = Path.Combine(dataFolder, "AddrBook");
+            // all ldap type address books start with an ~
+            foreach (var addrBook in Directory.EnumerateDirectories(addressBooksBaseFolder, "~*")) {
+                yield return addrBook;
             }
         }
 

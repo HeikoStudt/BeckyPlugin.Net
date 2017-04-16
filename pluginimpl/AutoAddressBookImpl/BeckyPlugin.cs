@@ -3,16 +3,16 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Text;
 using System.Windows.Forms;
 using BeckyTypes.ExportEnums;
 using BeckyTypes.PluginListener;
 using MimeKit;
 using NLog;
 using Utilities;
-using GetAssemblyInformation = BeckyTypes.Helpers.GetAssemblyInformation;
 
 
-namespace AutoAddressBook
+namespace AutoAddressBookImpl
 {
     public class BeckyPlugin : IBeckyPlugin
     {
@@ -26,12 +26,7 @@ namespace AutoAddressBook
         }
 
         public IPluginInfo OnPlugInInfo() {
-            return new PluginInfo {
-                PluginName = GetAssemblyInformation.Title,
-                Vendor = GetAssemblyInformation.Vendor,
-                Version = GetAssemblyInformation.Version.ToString(),
-                Description = GetAssemblyInformation.Description,
-            };
+            return null; // default: use mapped assembly properties
         }
 
         public void OnOpenCompose(IntPtr hWnd, BeckyComposeMode nMode) {
@@ -53,15 +48,16 @@ namespace AutoAddressBook
             string dataFolder = _callsIntoBecky.GetDataFolder();
             Logger.Info("Datafolder: " + dataFolder);
             var emailAddressesInB2AddressBook = GetEmailAddresses(dataFolder).ToLookup(x => x);
-            
-            var message = MimeMessage.Load(lpMessage);
-            var allAddresses = GetAllAddressesSentTo(message);
+            using (var mailStream = lpMessage.GenerateStream(Encoding.UTF8)) {
+                var message = MimeMessage.Load(mailStream);
+                var allAddresses = GetAllAddressesSentTo(message);
 
-            var newAddresses = allAddresses.Where(x => !emailAddressesInB2AddressBook.Contains(x.Address));
-            foreach (var address in newAddresses) {
-                var emailaddress = address.Address;
-                var name = address.Name;
-                Logger.Info("New address: " + emailaddress + " name: " + name);
+                var newAddresses = allAddresses.Where(x => !emailAddressesInB2AddressBook.Contains(x.Address));
+                foreach (var address in newAddresses) {
+                    var emailaddress = address.Address;
+                    var name = address.Name;
+                    Logger.Info("New address: " + emailaddress + " name: " + name);
+                }
             }
             return BeckyOnSend.NOTHING;
         }
@@ -80,7 +76,11 @@ namespace AutoAddressBook
             foreach (string line in lines) {
                 //startswith is fast
                 if (line.StartsWith("EMAIL")) {
-                    //TODO: there seems to be a notion of "folding"
+                    //TODO: there seems to be a notion of "folding" in VCards, currently I am ignoring this fact
+                    // The nuget OS library Thought.vCard seems to be of high standard, but dead (2007) vCard 3.0 is latest (?)
+                    // The nuget OS library MixERP.Net.VCards seems rather new and in work, but lacks support of inline-charsets
+                    //    i made an issue
+                    // Third nuget OS library is EWSoftware.PDI.Data of 2015 (so dead again)
                     string email = line.Substring(line.IndexOf(':') + 1);
                     yield return email;
                 }

@@ -24,12 +24,7 @@ namespace BeckyPlugin
         }
 
         public IPluginInfo OnPlugInInfo() {
-            return new PluginInfo {
-                PluginName = GetAssemblyInformation.Title,
-                Vendor = GetAssemblyInformation.Vendor,
-                Version = GetAssemblyInformation.Version.ToString(),
-                Description = GetAssemblyInformation.Description,
-            };
+            return null; // default: use mapped assembly properties
         }
 
         public void OnOpenCompose(IntPtr hWnd, BeckyComposeMode nMode) {

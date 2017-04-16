@@ -73,12 +73,16 @@ namespace BeckyTypes.PluginListener
 
         /// <summary>
         ///   Called when plug-in information is being retrieved.
+        ///   NULL return value is using the assembly properties of the plugin stub assembly.
         /// </summary>
         /// <remarks>
-        /// Note: You should not call any functions of Becky! API in this callback.
-        ///       Some API functions can cause GPF.
+        ///   Note: You should not call any functions of Becky! API in this callback.
+        ///         Some API functions can cause GPF.
         /// </remarks>
         /// <returns>
+        ///   NULL return value is using the assembly properties of the plugin stub assembly.
+        /// 
+        ///   If you specify a non-null return value: 
         ///   You MUST specify at least szPlugInName and szVendor.
         ///   otherwise Becky! will silently ignore your plug-in.
         /// </returns>
