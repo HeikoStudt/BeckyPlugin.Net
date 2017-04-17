@@ -48,9 +48,10 @@
     <Compile Include="ExportEnums\BeckyDropEffect.cs" />
     <Compile Include="ExportEnums\BeckyFilter.cs" />
     <Compile Include="ExportEnums\BeckyIcon.cs" />
+    <Compile Include="ExportEnums\BeckyMenu.cs" />
     <Compile Include="ExportEnums\BeckyOnSend.cs" />
     <Compile Include="ExportEnums\BeckyOutgoingMode.cs" />
-    <Compile Include="ExportEnums\BeckySharedEnums.cs" />
+    <Compile Include="ExportEnums\BeckyAction.cs" />
     <Compile Include="ExportEnums\BeckyShiftMode.cs" />
     <Compile Include="ExportEnums\BeckyToolbar.cs" />
     <Compile Include="Helpers\GetAssemblyInformation.cs" />
