@@ -9,6 +9,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BeckyApi", "BeckyApi\BeckyA
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Documentation", "Documentation", "{9F07573B-805F-489C-AF43-BBE34C591D2E}"
 	ProjectSection(SolutionItems) = preProject
+		..\copy-plugins-and-start.ps1 = ..\copy-plugins-and-start.ps1
 		..\LICENSE = ..\LICENSE
 		..\README.md = ..\README.md
 	EndProjectSection
@@ -22,6 +23,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AutoAddressBookImpl", "..\pluginimpl\AutoAddressBookImpl\AutoAddressBookImpl.csproj", "{7B3831A1-2B76-412B-A895-4CA28456C961}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Plugin_AutoAddressBook", "Plugin_AutoAddressBook", "{AB5996DB-6129-42BC-A743-9185EECCC80C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BeckyStartDebug", "BeckyStartDebug\BeckyStartDebug.csproj", "{919FF262-9B0D-40B6-976B-B039856DDDF5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -53,6 +56,10 @@ Global
 		{7B3831A1-2B76-412B-A895-4CA28456C961}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7B3831A1-2B76-412B-A895-4CA28456C961}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7B3831A1-2B76-412B-A895-4CA28456C961}.Release|Any CPU.Build.0 = Release|Any CPU
+		{919FF262-9B0D-40B6-976B-B039856DDDF5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{919FF262-9B0D-40B6-976B-B039856DDDF5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{919FF262-9B0D-40B6-976B-B039856DDDF5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{919FF262-9B0D-40B6-976B-B039856DDDF5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

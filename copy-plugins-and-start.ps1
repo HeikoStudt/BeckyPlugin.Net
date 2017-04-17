@@ -1,3 +1,7 @@
+Param(
+  [string]$pluginname
+)
+
 $BECKYFOLDER="C:\temp\BeckyPluginTest\bk27300"
 $DATAFOLDER="C:\temp\BeckyPluginTest\bkdata"
 $BACKUPFOLDER="C:\temp\BeckyPluginTest\backup\"
@@ -21,16 +25,13 @@ function Copy-ItemExclude($source, $destination, $exclude) {
 	| Copy-Item -Destination {Join-Path $destination $_.FullName.Substring($source.length)}
 }
 
-$plugins = Get-Item "$PLUGINFOLDER/*"
-foreach($plugin in $plugins) {
-	$pluginname = $plugin.Name
+function Copy-Plugin($pluginname) {
 	Write-Host "Copying: $pluginname"
 	if (Test-Path "$BECKYFOLDER/plugins/$pluginname") {
 		# There is always at least nlog.dll inside that folder => no special handling for pluginname.dll
 		New-Item -ItemType directory -Path "$BACKUPFOLDER/$pluginname/$datetime"
 		Move-Item "$BECKYFOLDER/plugins/$pluginname*" "$BACKUPFOLDER/$pluginname/$datetime"
 	}
-	
 	New-Item -ItemType directory -Path "$BECKYFOLDER/plugins/$pluginname"
 	#http://stackoverflow.com/questions/731752/exclude-list-in-powershell-copy-item-does-not-appear-to-be-working
 	Copy-ItemExclude "$PLUGINFOLDER/$pluginname/bin/Debug" "$BECKYFOLDER/plugins/$pluginname" ("$PLUGINFOLDER/$pluginname/bin/Debug/$pluginname.*")
@@ -40,6 +41,18 @@ foreach($plugin in $plugins) {
 	Copy-Item "$PLUGINFOLDER/$pluginname/bin/Debug/$pluginname.*" "$BECKYFOLDER/plugins/"  -Recurse
 }
 
-#foreach($plugin in $plugins) { echo $plugin.Name }
+if (-not $pluginname -eq "") {
+	# Copy SELECTED plugin
+	pause 1000
+	sleep 10
+	Copy-Plugin $pluginname
+} else {
+	# Copy ALL plugins
+	$plugins = Get-Item "$PLUGINFOLDER/*"
+	foreach($plugin in $plugins) {
+		$pluginname = $plugin.Name
+		Copy-Plugin $pluginname
+	}
+}
 
-. $BECKYFOLDER\b2.exe
+#. $BECKYFOLDER\b2.exe

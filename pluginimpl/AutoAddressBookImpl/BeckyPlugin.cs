@@ -3,13 +3,19 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Windows.Forms;
+using BeckyApi;
+using BeckyApi.Enums;
+using BeckyApi.WinApi;
 using BeckyTypes.ExportEnums;
 using BeckyTypes.PluginListener;
 using MimeKit;
 using NLog;
+using PInvoke;
 using Utilities;
+using BeckyMenu = BeckyTypes.ExportEnums.BeckyMenu;
 
 
 namespace AutoAddressBookImpl
@@ -18,7 +24,7 @@ namespace AutoAddressBookImpl
     {
         private static readonly ILogger Logger = LogManager.GetCurrentClassLogger();
 
-        private readonly BeckyApi.CallsIntoBecky _callsIntoBecky = new BeckyApi.CallsIntoBecky(); //TODO: structuremap?
+        private readonly CallsIntoBecky _callsIntoBecky = new CallsIntoBecky(); //TODO: structuremap?
 
 
         public void OnEveryMinute() {
@@ -108,8 +114,8 @@ namespace AutoAddressBookImpl
             return false;
         }
 
-        public BeckyFilter OnBeforeFilter2(string lpMessage, string lpMailBox, out global::BeckyTypes.ExportEnums.BeckyAction action, out string actionParam) {
-            action = global::BeckyTypes.ExportEnums.BeckyAction.ACTION_NOTHING;
+        public BeckyFilter OnBeforeFilter2(string lpMessage, string lpMailBox, out BeckyTypes.ExportEnums.BeckyAction action, out string actionParam) {
+            action = BeckyTypes.ExportEnums.BeckyAction.ACTION_NOTHING;
             actionParam = null;
             return BeckyFilter.BKC_FILTER_DEFAULT;
         }
@@ -121,26 +127,60 @@ namespace AutoAddressBookImpl
         public bool OnExit() {
             return true;
         }
-        
-        public void OnMenuInit(IntPtr hWnd, IntPtr hMenu, global::BeckyTypes.ExportEnums.BeckyMenu nType) {
+
+
+        public void OnMainMenuInit(IntPtr hWnd, IntPtr hMenu, BeckyMenu nType) {
+            {
+                Logger.Info("OnMainMenuInit");
+                var menu = MenuUtils.GetStandardMenu(hMenu, "Tools");
+                var nativeWindow = NativeWindow.FromHandle(hWnd);
+                Logger.Info("nativeWindow " + nativeWindow);
+
+                IntPtr hSubMenu = Menus.GetSubMenu(hMenu, 4);
+                Menus.AppendMenu(hSubMenu, Menus.MenuFlags.MF_SEPARATOR, 0, null);
+
+
+                //Tools
+                var nId = _callsIntoBecky.RegisterCommand("Test", (BeckyApi.Enums.BeckyMenu)nType, CmdTest);
+                _callsIntoBecky.RegisterUICallback(nId, CmdTestUi);
+                Menus.AppendMenu(hSubMenu, Menus.MenuFlags.MF_STRING, nId, "Test");
+
+                // Main menu
+                //Menus.AppendMenu(hMenu, Menus.MenuFlags.MF_STRING, nId, "Test");
+
+                Logger.Info("NID: {0} {1}", nId, nType);
+            }
+        }
+
+        public void CmdTest(IntPtr hWnd, short menuCommandId, short futureUse) {
+            Logger.Info("Becky version: {0}", _callsIntoBecky.GetVersion());
+        }
+
+        public BeckyCmdUI CmdTestUi(IntPtr hWnd, short menuCommandId, short futureUse) {
+            BeckyCmdUI nRetVal = 0;
+            nRetVal |= BeckyCmdUI.BKMENU_CMDUI_CHECKED;
+            return nRetVal;
+        }
+
+        public void OnMenuInit(IntPtr hWnd, IntPtr hMenu, BeckyMenu nType) {
             switch (nType) {
-                case global::BeckyTypes.ExportEnums.BeckyMenu.BKC_MENU_MAIN:
+                case BeckyMenu.BKC_MENU_MAIN:
 
                     // Test code is invoked
-                    //new TestExamples(_callsIntoBecky)
-                    //    .OnMainMenuInit(hWnd, hMenu, nType);
+                    //OnMainMenuInit(hWnd, hMenu, nType);
 
                     break;
-                case global::BeckyTypes.ExportEnums.BeckyMenu.BKC_MENU_LISTVIEW:
+                case BeckyMenu.BKC_MENU_LISTVIEW:
                     break;
-                case global::BeckyTypes.ExportEnums.BeckyMenu.BKC_MENU_TREEVIEW:
-                case global::BeckyTypes.ExportEnums.BeckyMenu.BKC_MENU_MSGVIEW:
-                case global::BeckyTypes.ExportEnums.BeckyMenu.BKC_MENU_MSGEDIT:
+                case BeckyMenu.BKC_MENU_TREEVIEW:
+                case BeckyMenu.BKC_MENU_MSGVIEW:
+                case BeckyMenu.BKC_MENU_MSGEDIT:
                     break;
-                case global::BeckyTypes.ExportEnums.BeckyMenu.BKC_MENU_COMPOSE:
+                case BeckyMenu.BKC_MENU_COMPOSE:
+                    // Compose window main menu
                     break;
-                case global::BeckyTypes.ExportEnums.BeckyMenu.BKC_MENU_COMPEDIT:
-                case global::BeckyTypes.ExportEnums.BeckyMenu.BKC_MENU_COMPREF:
+                case BeckyMenu.BKC_MENU_COMPEDIT:
+                case BeckyMenu.BKC_MENU_COMPREF:
                     break;
             }
         }

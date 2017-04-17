@@ -7,28 +7,12 @@ It is calling the plugin methods in your own BeckyPlugin.cs through the interfac
 
 Additionally, it provides you with all the DllImport/PInvoke of the Becky! 2 API in B2.EXE. You have got a nice .NET API using C# delegates, the C# Garbage Collector while reducing the handling with pointers.
 
-It gives you the opportunity of referencing arbitrary libraries as it provides you with an assembly loader able to gather the referenced .NET assemblies out of plugins/(assemblyname).
+It gives you the opportunity of referencing arbitrary libraries as it provides you with an assembly loader able to gather the referenced .NET assemblies out of becky/plugins/(assemblyname).
 
 # Existing plugins
  * [AutoAddressBook](plugins/AutoAddressBook)
 
-# How to Use (old)
-First, you will have to provide your own plugin information in BeckyPlugin/Properties/AssemblyInfo.cs.
-Here, the AssemblyTitle is mapped onto the plugin name and the AssemblyCompany is the "vendor" of the plugin.
-AssemblyDescription and AssemblyVersion are mapped as well.
-
-Second, you have to rename the assembly library name (dll name) in Project Properties.
-
-Third, you will have to add nlog.dll and nlog.config into the folder of b2.exe (not the plugin one).
-
-Fourth, you will have to add your code in BeckyPlugin.cs and call into an object of type CallsIntoBecky.
-
-IF you want to seperate your plugin from changes to the SDK, you should
-
-For easier developement, add an Visual Studio "Tools:External Tool" to some copy.bat with "Use Output Window" and some shortcut.
-=> copy-plugins-and-start.bat
-
-# How to create a new Plugin (new)
+# How to create a new Plugin
 0. Create and configure a nlog.config in directory of B2.exe (if not yet existing).
 
 1. Add a new plugin assembly project into /plugins folder having the same output assembly name as its folder name. (Sample: plugins/AutoAddressBook with AutoAddressBook.dll)
@@ -78,11 +62,14 @@ Use _callsIntoBecky as an object for API calls into Becky!.
 # How to debug my plugin?
 
 If you've followed my advice of dividing your plugin into a stub and an implementation project, 
-you can simply put a shortcut on "copy-and-start" (so starting becky) and then Debug->Attach to Process (B2.EXE).
+you can simply attach to the Becky! process (B2.EXE).
 
 This is quite powerfull.
 
-Although, there is a PDB file for the plugin stub project, it does not match the DLL as fody and DllExport are messing the IL a bit.
+If you set BeckyStartDebug as the startup-application, put the right Becky! path and reference your plugin, you can simply start/debug it! :-)
+
+
+Although, there is a PDB file for the plugin stub project, it does not match the DLL as both Fody and DllExport are messing the IL a bit.
 Probably the Fody.ModuleInit creates a new, unknown method which alters some hash or such.
 
 
@@ -91,12 +78,13 @@ Probably the Fody.ModuleInit creates a new, unknown method which alters some has
  * Test all the methods and their mappings/marshalling. (around 40% done)
  * Review possibilities to embed WPF into the Win32 API of Becky! 2.
    (https://msdn.microsoft.com/en-us/library/ms742522.aspx)
+ * Create a NugetPackage Win32MenuWrapper and include all the correct APIs into PInvoke.
  * Ask Carty to
    * implement some meaning to say "I do NOT implement BKC_OnRequestResource" while exporting, as well as BKC_OnRequestResource2
-   * tell me my error on "X-Becky-Attachment" in ComposeMail
-     => got an answer, write here...
+     i.e. int BKC_OnIgnoreResources() if implemented and return 1 => the resource gathering ignores this dll.
    * Nlog.config still needs to be placed in b2.exe folder.
-     All dlls may be in plugins/name/ folder but the main entry point dll.
+     All dlls may be in becky/plugins/(pluginname)/ folder but the main entry point dll.
+ * Try to put DllExport into Fody and/or Roslyn (https://github.com/dotnet/roslyn/issues/1013)
 
 # Build Tools
  * Visual Studio 2015 (having Resharper).
@@ -112,7 +100,9 @@ Probably the Fody.ModuleInit creates a new, unknown method which alters some has
   * BeckyPluginTemplate is a template to copy files from and for the time being to test the API manually.
   * BeckyApi is the callable API of B2.EXE and, as long as neccessary, file API for the AddressBook.
   * Utilities for classes usable in many plugins (like IniFile)
+  * BeckyStartDebug is compiling and copiing the (referenced) plugins (via built event and the ps1 script) and starting up B2.EXE attached to VS.
   * AutoAddressBook is my first 'real' plugin, still in raw shape :)
+  * AutoAddressBookImpl is the debuggable implementation of my first plugin.
 
 
 # License
