@@ -40,7 +40,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AddressBook\Helper.cs" />
+    <Compile Include="AddressBook\AbstractAddressBook.cs" />
+    <Compile Include="AddressBook\AddressBookFactory.cs" />
+    <Compile Include="AddressBook\BeckyAddressBook.cs" />
+    <Compile Include="AddressBook\BeckyAddressBookGroup.cs" />
+    <Compile Include="AddressBook\LdapAddressBook.cs" />
     <Compile Include="Enums\BeckyCmdUI.cs" />
     <Compile Include="Enums\BeckyMenu.cs" />
     <Compile Include="Enums\BeckyAction.cs" />

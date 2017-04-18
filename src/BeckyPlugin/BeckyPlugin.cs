@@ -1,135 +1,117 @@
 using System;
-using System.IO;
-using System.Runtime.CompilerServices;
 using System.Windows.Forms;
-using BeckyPlugin.Helpers;
 using BeckyTypes.ExportEnums;
-using BeckyTypes.Helpers;
 using BeckyTypes.PluginListener;
 using NLog;
-using Utilities;
 
 
 namespace BeckyPlugin
 {
-    public class BeckyPlugin : IBeckyPlugin
+    public class BeckyPlugin : AbstractBeckyPlugin
     {
         private static readonly ILogger Logger = LogManager.GetCurrentClassLogger();
 
-        private readonly BeckyApi.CallsIntoBecky _callsIntoBecky = new BeckyApi.CallsIntoBecky(); //TODO: structuremap?
-
-        private IniFile _pluginConfiguration;
-
-        public string PluginName { get; }
-
-
-        public BeckyPlugin(string pluginName) {
-            PluginName = pluginName;
+        public BeckyPlugin(string pluginName) : base(pluginName) {
+            OnMainMenuInit += BeckyPlugin_OnMainMenuInit;
+            OnListViewContextMenuInit += BeckyPlugin_OnListViewContextMenuInit;
+            OnTreeViewContextMenuInit += BeckyPlugin_OnTreeViewContextMenuInit;
+            OnMessageViewContextMenuInit += BeckyPlugin_OnMessageViewContextMenuInit;
+            OnMessageViewEditableContextMenuInit += BeckyPlugin_OnMessageViewEditableContextMenuInit;
+            OnTaskTrayContextMenuInit += BeckyPlugin_OnTaskTrayContextMenuInit;
+            OnComposerMainMenuInit += BeckyPlugin_OnComposerMainMenuInit;
+            OnComposerEditContextMenuInit += BeckyPlugin_OnComposerEditContextMenuInit;
+            OnComposerReferenceContextMenuInit += BeckyPlugin_OnComposerReferenceContextMenuInit;
         }
 
-        private IniFile PluginConfiguration {
-            get {
-                if (_pluginConfiguration == null) {
-                    var dataFolder = _callsIntoBecky.GetDataFolder();
-                    var pluginFolder = Path.Combine(dataFolder, "plugins", PluginName);
-                    var pluginIniName = Path.Combine(pluginFolder, PluginName + ".ini");
-                    _pluginConfiguration = _pluginConfiguration ?? new IniFile(pluginIniName);
-                }
-                return _pluginConfiguration;
-            }
+        private void BeckyPlugin_OnComposerReferenceContextMenuInit(IntPtr hWnd, IntPtr hMenu) {
         }
 
+        private void BeckyPlugin_OnComposerEditContextMenuInit(IntPtr hWnd, IntPtr hMenu) {
+        }
 
-        public void OnEveryMinute() {
+        private void BeckyPlugin_OnComposerMainMenuInit(IntPtr hWnd, IntPtr hMenu) {
+        }
+
+        private void BeckyPlugin_OnTaskTrayContextMenuInit(IntPtr hWnd, IntPtr hMenu) {
+        }
+
+        private void BeckyPlugin_OnMessageViewEditableContextMenuInit(IntPtr hWnd, IntPtr hMenu) {
+        }
+
+        private void BeckyPlugin_OnMessageViewContextMenuInit(IntPtr hWnd, IntPtr hMenu) {
+        }
+
+        private void BeckyPlugin_OnTreeViewContextMenuInit(IntPtr hWnd, IntPtr hMenu) {
+        }
+
+        private void BeckyPlugin_OnListViewContextMenuInit(IntPtr hWnd, IntPtr hMenu) {
+        }
+
+        private void BeckyPlugin_OnMainMenuInit(IntPtr hWnd, IntPtr hMenu) {
+        }
+
+        public override void OnEveryMinute() {
 
         }
 
-        public IPluginInfo OnPlugInInfo() {
-            return null; // default: use mapped assembly properties
+        public override IPluginInfo OnPlugInInfo() {
+            // don't use DataFolder or CallsIntoBecky
+            return null; // null: use mapped assembly properties
         }
 
-        public void OnOpenCompose(IntPtr hWnd, BeckyComposeMode nMode) {
+        public override void OnOpenCompose(IntPtr hWnd, BeckyComposeMode nMode) {
         }
 
-        public bool OnOutgoing(IntPtr hWnd, BeckyOutgoingMode nMode) {
+        public override bool OnOutgoing(IntPtr hWnd, BeckyOutgoingMode nMode) {
             return true;
         }
 
-        public bool OnKeyDispatch(IntPtr hWnd, Keys nKey, BeckyShiftMode nShift) {
+        public override bool OnKeyDispatch(IntPtr hWnd, Keys nKey, BeckyShiftMode nShift) {
             return false;
         }
 
-        public void OnRetrieve(string lpMessage, string lpMailId) {
+        public override void OnRetrieve(string lpMessage, string lpMailId) {
         }
 
-        public BeckyOnSend OnSend(string lpMessage) {
+        public override BeckyOnSend OnSend(string lpMessage) {
             return BeckyOnSend.NOTHING;
         }
 
-        public void OnFinishRetrieve(int nNumber) {
+        public override void OnFinishRetrieve(int nNumber) {
         }
 
-        public bool OnPlugInSetup(IntPtr hWnd) {
+        public override bool OnPlugInSetup(IntPtr hWnd) {
             return false;
         }
 
-        public bool OnDragDrop(string lpTgt, string lpSrc, int nCount, BeckyDropEffect dropEffect) {
+        public override bool OnDragDrop(string lpTgt, string lpSrc, int nCount, BeckyDropEffect dropEffect) {
             return false;
         }
 
-        public BeckyFilter OnBeforeFilter2(string lpMessage, string lpMailBox, out BeckyTypes.ExportEnums.BeckyAction action, out string actionParam) {
-            action = BeckyTypes.ExportEnums.BeckyAction.ACTION_NOTHING;
+        public override BeckyFilter OnBeforeFilter2(string lpMessage, string lpMailBox, out BeckyAction action, out string actionParam) {
+            action = BeckyAction.ACTION_NOTHING;
             actionParam = null;
             return BeckyFilter.BKC_FILTER_DEFAULT;
         }
 
-        public void OnStart() {
+        public override void OnStart() {
 
         }
 
-        public bool OnExit() {
+        public override bool OnExit() {
             return true;
         }
         
-        public void OnMenuInit(IntPtr hWnd, IntPtr hMenu, BeckyTypes.ExportEnums.BeckyMenu nType) {
-            switch (nType) {
-                case BeckyTypes.ExportEnums.BeckyMenu.BKC_MENU_MAIN:
-
-                    // Test code is invoked
-                    new TestExamples(_callsIntoBecky)
-                        .OnMainMenuInit(hWnd, hMenu, nType);
-
-                    break;
-                case BeckyTypes.ExportEnums.BeckyMenu.BKC_MENU_LISTVIEW:
-                    break;
-                case BeckyTypes.ExportEnums.BeckyMenu.BKC_MENU_TREEVIEW:
-                case BeckyTypes.ExportEnums.BeckyMenu.BKC_MENU_MSGVIEW:
-                case BeckyTypes.ExportEnums.BeckyMenu.BKC_MENU_MSGEDIT:
-                    break;
-                case BeckyTypes.ExportEnums.BeckyMenu.BKC_MENU_COMPOSE:
-                    break;
-                case BeckyTypes.ExportEnums.BeckyMenu.BKC_MENU_COMPEDIT:
-                case BeckyTypes.ExportEnums.BeckyMenu.BKC_MENU_COMPREF:
-                    break;
-            }
+        public override void OnMenuInit(IntPtr hWnd, IntPtr hMenu, BeckyMenu nType) {
+            base.OnMenuInit(hWnd, hMenu, nType);
         }
 
-        public void OnOpenFolder(string lpFolderId) {
+        public override void OnOpenFolder(string lpFolderId) {
 
         }
 
-        public void OnOpenMail(string lpMailId) {
+        public override void OnOpenMail(string lpMailId) {
 
         }
-
-
-        #region Exception handling, do not touch
-        public bool IsDisabled { get; private set; }
-
-        public void GotUnhandledException(Exception e, [CallerMemberName] string methodName = null) {
-            IsDisabled = true; // First
-            Logger.Fatal(e, "Got an unhandled exception: {0}", e.Message);
-        }
-        #endregion
     }
 }

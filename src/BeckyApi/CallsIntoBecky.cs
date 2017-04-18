@@ -196,7 +196,7 @@ namespace BeckyApi
         /// Example of CmdUIProc:
         /// <code>
         /// BeckyCmdUI CmdUIProc(IntPtr hWnd, IntPtr lParam) {
-        ///     uint nRetVal = 0;
+        ///     BeckyCmdUI nRetVal;
         ///     if (you want to disable the menu item) {
         ///         nRetVal |= BKMENU_CMDUI_DISABLED;
         ///     }

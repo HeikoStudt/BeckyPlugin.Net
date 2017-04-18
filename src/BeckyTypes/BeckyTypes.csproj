@@ -32,6 +32,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
+      <HintPath>..\packages\NLog.4.4.6\lib\net45\NLog.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Windows.Forms" />
@@ -57,10 +60,24 @@
     <Compile Include="Helpers\GetAssemblyInformation.cs" />
     <Compile Include="Helpers\PluginInfoConverter.cs" />
     <Compile Include="Helpers\ToCharArrayExtension.cs" />
+    <Compile Include="PluginListener\AbstractBeckyPlugin.cs" />
     <Compile Include="PluginListener\IBeckyPlugin.cs" />
     <Compile Include="PluginListener\IPluginInfo.cs" />
     <Compile Include="PluginListener\PluginInfo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\BeckyApi\BeckyApi.csproj">
+      <Project>{c56c444e-6e34-45c2-aa94-2d3c9ba850eb}</Project>
+      <Name>BeckyApi</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Utilities\Utilities.csproj">
+      <Project>{8474a390-5807-4713-9ff9-16717a6b3e3f}</Project>
+      <Name>Utilities</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
