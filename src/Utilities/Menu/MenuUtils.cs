@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Runtime.InteropServices;
 //using NLog;
-using PInvoke;
+//using PInvoke;
 
 namespace AutoAddressBookImpl {
-    using static Win32Menu;
+    //using static Win32Menu;
 
     public class MenuUtils {
+        /*
         public static int GetStandardMenuIndex(IntPtr hParentMenu, string name) {
             MENUITEMINFO mii = MENUITEMINFO.Create();
             for (int i = 0; i < GetMenuItemCount(hParentMenu); i++) {
@@ -40,6 +41,6 @@ namespace AutoAddressBookImpl {
                 }
             }
             return -1;
-        }
+        }*/
     }
 }

@@ -122,4 +122,6 @@ Another possibility is a fork of above [DllExport](https://github.com/3F/DllExpo
 
 The module initializing is done via [ModuleInit.Fody](https://www.nuget.org/packages/ModuleInit.Fody/).
 
+The ini-file handling is done via [ini-parser](https://github.com/rickyah/ini-parser).
+
 For putting up some window and menu stuff, you can use the [Nuget Package of PInvoke](https://github.com/AArnott/pinvoke). While most of Win32 APIs are still missing in the package, you can add those [Win32 APIs](http://www.pinvoke.net) yourself.

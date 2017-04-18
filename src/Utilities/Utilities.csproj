@@ -64,6 +64,9 @@
     <Compile Include="Menu\Win32Menu.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="StringToStream.cs" />
+    <Compile Include="WinApi\Menus.cs" />
+    <Compile Include="WinApi\Misc.cs" />
+    <Compile Include="WinApi\WindowMessages.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
