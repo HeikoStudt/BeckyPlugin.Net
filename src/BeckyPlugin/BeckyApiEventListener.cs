@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Reflection;
 using System.Runtime.InteropServices;
 using BeckyTypes.ExportEnums;
 using BeckyTypes.Helpers;
@@ -30,7 +31,8 @@ namespace BeckyPlugin {
 
         static BeckyApiEventListener() {
             Logger = LogManager.GetCurrentClassLogger();
-            Listener = new BeckyPlugin();
+            var pluginName = Assembly.GetExecutingAssembly().GetName().Name;
+            Listener = new BeckyPlugin(pluginName);
         }
 
         [DllExport("BKC_OnStart", CallingConvention.Winapi)]

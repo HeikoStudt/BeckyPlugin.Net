@@ -45,7 +45,7 @@ data.
             var addressBooksBaseFolder = Path.Combine(dataFolder, "AddrBook");
             // all becky type address books start with an @
             foreach (var addrBookInitial in Directory.EnumerateDirectories(addressBooksBaseFolder, "@*")) {
-                yield return FollowAddressIniPath(addrBookInitial);
+                yield return FollowBeckyAddressBookPath(addrBookInitial);
             }
         }
 
@@ -60,7 +60,12 @@ data.
             }
         }
 
-        private static string FollowAddressIniPath(string initialPath) {
+        /// <summary>
+        ///   Follow the address book path via Address.ini to the point of no return.
+        ///   Returns the 'real' path of the address book.
+        ///   Does not work for Ldap address books.
+        /// </summary>
+        public static string FollowBeckyAddressBookPath(string initialPath) {
             List<string> triedPathes = new List<string>();
             string currentPath = initialPath;
 

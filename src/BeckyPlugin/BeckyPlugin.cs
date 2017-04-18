@@ -1,4 +1,5 @@
 using System;
+using System.IO;
 using System.Runtime.CompilerServices;
 using System.Windows.Forms;
 using BeckyPlugin.Helpers;
@@ -6,6 +7,7 @@ using BeckyTypes.ExportEnums;
 using BeckyTypes.Helpers;
 using BeckyTypes.PluginListener;
 using NLog;
+using Utilities;
 
 
 namespace BeckyPlugin
@@ -15,6 +17,27 @@ namespace BeckyPlugin
         private static readonly ILogger Logger = LogManager.GetCurrentClassLogger();
 
         private readonly BeckyApi.CallsIntoBecky _callsIntoBecky = new BeckyApi.CallsIntoBecky(); //TODO: structuremap?
+
+        private IniFile _pluginConfiguration;
+
+        public string PluginName { get; }
+
+
+        public BeckyPlugin(string pluginName) {
+            PluginName = pluginName;
+        }
+
+        private IniFile PluginConfiguration {
+            get {
+                if (_pluginConfiguration == null) {
+                    var dataFolder = _callsIntoBecky.GetDataFolder();
+                    var pluginFolder = Path.Combine(dataFolder, "plugins", PluginName);
+                    var pluginIniName = Path.Combine(pluginFolder, PluginName + ".ini");
+                    _pluginConfiguration = _pluginConfiguration ?? new IniFile(pluginIniName);
+                }
+                return _pluginConfiguration;
+            }
+        }
 
 
         public void OnEveryMinute() {

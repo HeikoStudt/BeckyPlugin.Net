@@ -11,6 +11,11 @@ namespace BeckyTypes.PluginListener
     public interface IBeckyPlugin
     {
         /// <summary>
+        ///   The plugin name for the configuration and such.
+        /// </summary>
+        string PluginName { get; }
+
+        /// <summary>
         ///   Called when the program is started and the main window is created.
         /// </summary>
         /// <remarks>

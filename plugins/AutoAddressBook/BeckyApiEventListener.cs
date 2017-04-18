@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Reflection;
 using System.Runtime.InteropServices;
 using BeckyTypes.ExportEnums;
 using NLog;
@@ -33,7 +34,8 @@ namespace AutoAddressBook
         static BeckyApiEventListener()
         {
             Logger = LogManager.GetCurrentClassLogger();
-            Listener = new AutoAddressBookImpl.BeckyPlugin();
+            var pluginName = Assembly.GetExecutingAssembly().GetName().Name;
+            Listener = new AutoAddressBookImpl.BeckyPlugin(pluginName);
         }
 
         [DllExport("BKC_OnStart", CallingConvention.Winapi)]

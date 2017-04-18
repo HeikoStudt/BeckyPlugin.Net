@@ -7,6 +7,7 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Windows.Forms;
 using BeckyApi;
+using BeckyApi.AddressBook;
 using BeckyApi.Enums;
 using BeckyApi.WinApi;
 using BeckyTypes.ExportEnums;
@@ -25,6 +26,27 @@ namespace AutoAddressBookImpl
         private static readonly ILogger Logger = LogManager.GetCurrentClassLogger();
 
         private readonly CallsIntoBecky _callsIntoBecky = new CallsIntoBecky(); //TODO: structuremap?
+
+        private IniFile _pluginConfiguration;
+
+        public string PluginName { get; }
+
+
+        public BeckyPlugin(string pluginName) {
+            PluginName = pluginName;
+        }
+
+        private IniFile PluginConfiguration {
+            get {
+                if (_pluginConfiguration == null) {
+                    var dataFolder = _callsIntoBecky.GetDataFolder();
+                    var pluginFolder = Path.Combine(dataFolder, "plugins", PluginName);
+                    var pluginIniName = Path.Combine(pluginFolder, PluginName + ".ini");
+                    _pluginConfiguration = _pluginConfiguration ?? new IniFile(pluginIniName);
+                }
+                return _pluginConfiguration;
+            }
+        }
 
 
         public void OnEveryMinute() {
@@ -62,10 +84,85 @@ namespace AutoAddressBookImpl
                 foreach (var address in newAddresses) {
                     var emailaddress = address.Address;
                     var name = address.Name;
-                    Logger.Info("New address: " + emailaddress + " name: " + name);
+                    AddAddressToDefaultAddressBook(emailaddress, name);
                 }
             }
             return BeckyOnSend.NOTHING;
+        }
+
+        private void AddAddressToDefaultAddressBook(string emailaddress, string name) {
+            string defaultAddressBook = PluginConfiguration.Read("DefaultAddressBook", "Settings");
+            string defaultGroupPath = PluginConfiguration.Read("DefaultGroupPath", "Settings");
+
+            if (string.IsNullOrWhiteSpace(defaultAddressBook)) {
+                defaultAddressBook = "@Personal";
+            }
+            if (string.IsNullOrWhiteSpace(defaultGroupPath)) {
+                defaultGroupPath = "@Default";
+            }
+
+            var babFile = GetFirstBabFile(defaultAddressBook, defaultGroupPath);
+            if (babFile == null) {
+                return;
+            }
+
+            // according to Carty, the groups.idx file should be deleted if you add things in bab files.
+            var groupsIdxFile = Path.Combine(Path.GetDirectoryName(babFile), "groups.idx");
+            if (File.Exists(groupsIdxFile)) {
+                File.Delete(groupsIdxFile);
+            }
+
+            var vCard = GetVCard(emailaddress, name);
+            File.AppendAllLines(babFile, vCard);
+
+            Logger.Info("New address: {0}, name: {1}. Writing into {2} the vCard {3}", emailaddress, name, babFile, string.Join("\r\n", vCard));
+        }
+
+        private static string[] GetVCard(string emailaddress, string name) {
+            string[] names = name.Split(new[] {' '}, StringSplitOptions.RemoveEmptyEntries);
+            string firstName = names.Length <= 1 ? "" : (names.FirstOrDefault() ?? "");
+            string lastName = names.Length == 0 ? "" : names.Last();
+            string middle = names.Length <= 2 ? "" : string.Join(" ", names.Skip(1).Take(names.Length - 2));
+
+            //string uid = "58F279F5.008D0F25.4"; //TODO: create an algorithm
+            string uid = Guid.NewGuid().ToString("D");
+
+            var vCard = new[] {
+                $"BEGIN:VCARD",
+                $"VERSION:3.0",
+                $"UID:auto-{uid}",
+                $"FN:{name}",
+                $"N:{lastName};{firstName};{middle};",
+                $"EMAIL;PREF:{emailaddress}",
+                //$"REV:2017-04-15T22:18:54Z",
+                $"END:VCARD"
+            };
+            return vCard;
+        }
+
+        private string GetFirstBabFile(string addressBook, string groupPath) {
+            //TODO: look whether this is an ldap or becky address book
+            string initialAddressbookPath = Path.Combine(
+                _callsIntoBecky.GetDataFolder(),
+                "AddrBook",
+                addressBook);
+            string addressBookPath = Helper.FollowBeckyAddressBookPath(initialAddressbookPath);
+            var fullGroupPath = Path.Combine(addressBookPath, groupPath);
+            if (!Directory.Exists(fullGroupPath)) {
+                // create ?
+                Logger.Error("Could not find address book {1} / group {2} path: {0}",
+                    fullGroupPath, addressBook, groupPath);
+                return null;
+            }
+            var babs = Directory.EnumerateFiles(fullGroupPath, "*.bab", SearchOption.TopDirectoryOnly).ToList();
+            if (!babs.Any()) {
+                Logger.Error("Did not find any BAB file in " + fullGroupPath);
+                return null;
+            }
+            if (babs.Count > 1) {
+                Logger.Warn("Found more than one BAB file (taking first) in " + fullGroupPath);
+            }
+            return babs.First();
         }
 
         private IEnumerable<string> GetEmailAddresses(string dataFolder) {

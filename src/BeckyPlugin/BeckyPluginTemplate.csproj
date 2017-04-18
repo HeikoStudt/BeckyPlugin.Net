@@ -110,6 +110,10 @@
       <Project>{87f35097-ffb3-4b47-b34f-b652e23f1ffc}</Project>
       <Name>BeckyTypes</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Utilities\Utilities.csproj">
+      <Project>{8474a390-5807-4713-9ff9-16717a6b3e3f}</Project>
+      <Name>Utilities</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\Fody.1.29.2\build\dotnet\Fody.targets" Condition="Exists('..\packages\Fody.1.29.2\build\dotnet\Fody.targets')" />
