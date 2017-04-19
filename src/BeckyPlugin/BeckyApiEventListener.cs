@@ -217,12 +217,7 @@ namespace BeckyPlugin {
         public static int BKC_OnPlugInInfo(ref Api_TagBkPlugininfo lpPlugInInfo) {
             try {
                 Logger.Info("BKC_OnPlugInInfo");
-                var pluginInfo = Listener.OnPlugInInfo() ?? new PluginInfo {
-                    PluginName = GetAssemblyInformation.Title,
-                    Vendor = GetAssemblyInformation.Vendor,
-                    Version = GetAssemblyInformation.Version.ToString(),
-                    Description = GetAssemblyInformation.Description,
-                };
+                var pluginInfo = Listener.OnPlugInInfo() ?? GetAssemblyInformation.GetPluginInfo(Assembly.GetExecutingAssembly());
                 pluginInfo.FillStruct(ref lpPlugInInfo);
 
             } catch (Exception e) {

@@ -68,23 +68,41 @@ This is quite powerfull.
 
 If you set BeckyStartDebug as the startup-application, put the right Becky! path and reference your plugin, you can simply start/debug it! :-)
 
-
 Although, there is a PDB file for the plugin stub project, it does not match the DLL as both Fody and DllExport are messing the IL a bit.
 Probably the Fody.ModuleInit creates a new, unknown method which alters some hash or such.
 
 
 # Open ToDos
- * Creating a Nuget-Package of this SDK, so that each plugin may get the templates via t1?
+ * Perhaps creating a Nuget-Package of this SDK, so that each plugin may get the templates via t1?
  * Test all the methods and their mappings/marshalling. (around 40% done)
- * Review possibilities to embed WPF into the Win32 API of Becky! 2.
-   (https://msdn.microsoft.com/en-us/library/ms742522.aspx)
  * Create a NugetPackage Win32MenuWrapper and include all the correct APIs into PInvoke.
  * Ask Carty to
    * implement some meaning to say "I do NOT implement BKC_OnRequestResource" while exporting, as well as BKC_OnRequestResource2
      i.e. int BKC_OnIgnoreResources() if implemented and return 1 => the resource gathering ignores this dll.
-   * Nlog.config still needs to be placed in b2.exe folder.
-     All dlls may be in becky/plugins/(pluginname)/ folder but the main entry point dll.
  * Try to put DllExport into Fody and/or Roslyn (https://github.com/dotnet/roslyn/issues/1013)
+
+# How to log and gather logs
+Nlog.config still needs to be placed in b2.exe folder. Within nlog.config you can use chainsaw-output into UDP.
+Personally, I use [Loginator](https://github.com/dabeku/Loginator) for this purpose.
+
+# How to open a WPF control in a modal window (e.g. plugin configuration)
+
+```C#
+
+var control = new TestUserControl(ConfigurationProperty);
+Window window = new Window() {
+    Title = "Test",
+    Content = control,
+    SizeToContent = SizeToContent.WidthAndHeight,
+    ResizeMode = ResizeMode.NoResize
+};
+WindowInteropHelper wih = new WindowInteropHelper(window);
+wih.Owner = hWnd;
+if (true == window.ShowDialog()) {
+    //ConfigurationProperty = form.ChosenConfiguration;
+}
+
+```
 
 # Build Tools
  * Visual Studio 2015 (having Resharper).
