@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio 15
+VisualStudioVersion = 15.0.26403.7
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BeckyPluginTemplate", "BeckyPlugin\BeckyPluginTemplate.csproj", "{26BCEAA6-EA10-4222-BAB8-5E61B1466272}"
 EndProject
@@ -25,6 +25,12 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Plugin_AutoAddressBook", "Plugin_AutoAddressBook", "{AB5996DB-6129-42BC-A743-9185EECCC80C}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BeckyStartDebug", "BeckyStartDebug\BeckyStartDebug.csproj", "{919FF262-9B0D-40B6-976B-B039856DDDF5}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Plugin_Calendar", "Plugin_Calendar", "{CB75ECA9-9E4A-47F9-895B-92FFD8A1CD79}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Calendar", "..\plugins\Calendar\Calendar.csproj", "{2A311C05-7025-42B8-B2F8-A9F3A14BE038}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CalendarImpl", "..\pluginimpl\CalendarImpl\CalendarImpl.csproj", "{90AE54BD-5038-45AC-BF1F-3613E8543E46}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -60,6 +66,14 @@ Global
 		{919FF262-9B0D-40B6-976B-B039856DDDF5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{919FF262-9B0D-40B6-976B-B039856DDDF5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{919FF262-9B0D-40B6-976B-B039856DDDF5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2A311C05-7025-42B8-B2F8-A9F3A14BE038}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2A311C05-7025-42B8-B2F8-A9F3A14BE038}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2A311C05-7025-42B8-B2F8-A9F3A14BE038}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2A311C05-7025-42B8-B2F8-A9F3A14BE038}.Release|Any CPU.Build.0 = Release|Any CPU
+		{90AE54BD-5038-45AC-BF1F-3613E8543E46}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{90AE54BD-5038-45AC-BF1F-3613E8543E46}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{90AE54BD-5038-45AC-BF1F-3613E8543E46}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{90AE54BD-5038-45AC-BF1F-3613E8543E46}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -67,5 +81,7 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{C34703A0-7105-415E-BF4E-FC42A70B418A} = {AB5996DB-6129-42BC-A743-9185EECCC80C}
 		{7B3831A1-2B76-412B-A895-4CA28456C961} = {AB5996DB-6129-42BC-A743-9185EECCC80C}
+		{2A311C05-7025-42B8-B2F8-A9F3A14BE038} = {CB75ECA9-9E4A-47F9-895B-92FFD8A1CD79}
+		{90AE54BD-5038-45AC-BF1F-3613E8543E46} = {CB75ECA9-9E4A-47F9-895B-92FFD8A1CD79}
 	EndGlobalSection
 EndGlobal

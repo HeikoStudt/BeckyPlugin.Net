@@ -57,6 +57,10 @@
       <Project>{c34703a0-7105-415e-bf4e-fc42a70b418a}</Project>
       <Name>AutoAddressBook</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\plugins\Calendar\Calendar.csproj">
+      <Project>{2a311c05-7025-42b8-b2f8-a9f3a14be038}</Project>
+      <Name>Calendar</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
