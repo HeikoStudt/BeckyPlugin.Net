@@ -4,7 +4,28 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:CalendarImpl"
+             xmlns:Jarloo="clr-namespace:Jarloo.Calendar;assembly=Jarloo.Calendar"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
-    <Button Content="Button" HorizontalAlignment="Left" Margin="163,98,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click"/>
+
+    <Jarloo:Calendar />
+<!--
+    <StackPanel Name="Days"  HorizontalAlignment="Stretch" Margin="0,0,0,0" VerticalAlignment="Stretch" Orientation="Horizontal" >
+        <Border BorderBrush="Black" BorderThickness="1"  VerticalAlignment="Stretch">
+        <StackPanel Name="Hours" HorizontalAlignment="Left" VerticalAlignment="Stretch" Orientation="Vertical">
+                <Label Content="" HorizontalAlignment="Center"/>
+                <Button Content="Button" Margin="0,5,0,0" Width="75" Click="Button_Click" HorizontalAlignment="Center" VerticalContentAlignment="Stretch" VerticalAlignment="Top"/>
+                <Button Content="Button2" Margin="0,5,0,0" Width="75" Click="Button_Click" HorizontalAlignment="Center" VerticalContentAlignment="Stretch" VerticalAlignment="Top"/>
+                <Button Content="Button3" Margin="0,5,0,0" Width="76" Click="Button_Click" HorizontalAlignment="Center" VerticalContentAlignment="Stretch" VerticalAlignment="Top"/>
+        </StackPanel>
+        </Border>
+        <Border BorderBrush="Black" BorderThickness="1"  VerticalAlignment="Stretch">
+            <StackPanel Name="Monday" HorizontalAlignment="Left" VerticalAlignment="Stretch" Orientation="Vertical">
+                <Label Content="Monday" HorizontalAlignment="Center"/>
+                <Button Content="Button" Margin="0,5,0,0" Width="75" Click="Button_Click" HorizontalAlignment="Center" VerticalContentAlignment="Stretch" VerticalAlignment="Top"/>
+                <Button Content="Button2" Margin="0,5,0,0" Width="75" Click="Button_Click" HorizontalAlignment="Center" VerticalContentAlignment="Stretch" VerticalAlignment="Top"/>
+                <Button Content="Button3" Margin="0,5,0,0" Width="75" Click="Button_Click" HorizontalAlignment="Center" VerticalContentAlignment="Stretch" VerticalAlignment="Top"/>
+            </StackPanel>
+        </Border>
+    </StackPanel>-->
 </UserControl>

@@ -43,7 +43,7 @@ namespace CalendarImpl
                 Title = "Test",
                 Content = control,
                 SizeToContent = SizeToContent.WidthAndHeight,
-                ResizeMode = ResizeMode.NoResize
+                //ResizeMode = ResizeMode.NoResize
             };
             WindowInteropHelper wih = new WindowInteropHelper(window);
             wih.Owner = hWnd;
