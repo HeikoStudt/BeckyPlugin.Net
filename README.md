@@ -12,6 +12,11 @@ It gives you the opportunity of referencing arbitrary libraries as it provides y
 # Existing plugins
  * [AutoAddressBook](plugins/AutoAddressBook)
 
+# How/Where to intall the DLLs to?
+The exporting DLL, e.g. "example.dll", including its example.pdb and example.dll.config are to be stored inside the plugin folder of Becky!, which has two locations: in the application and the data folder.
+
+All other DLLs, like BeckyApi.dll, should be located into the sub folder named after the dll, e.g. "plugin/example/BeckyApi.dll" etc
+
 # How to create a new Plugin
 0. Create and configure a nlog.config in directory of B2.exe (if not yet existing).
 

@@ -9,6 +9,47 @@ This plugin takes all addresses in To, Cc, Bcc and Rcc of a outgoing message and
 
 Upon opening this address book once, you can use those addresses for autocompletion.
 
+# How/Where to intall the DLLs to?
+Currently, you will find the compiled DLLs in [AutoAddressBook_1.0.0.zip](https://github.com/HeikoStudt/BeckyPlugin.Net/blob/addressbook-build/plugins/AutoAddressBook/AutoAddressBook_1.0.0.zip).
+Please note, that I do not give any warranty on it, my recommendation is to build the DLLs yourself.
+
+I recommend to install the plugin to the data folder with the following structure.
+Afterwards, at startup Becky! will ask you whether to activate the plugin.
+
+Then, you need to configure it to use the correct address book (Tools -> Plug-Ins Setup -> AutoAddressBook).
+Then, try to write a test email to any new address and it should be added.
+
+    B2.ini (Base Data Dir)
+    PlugIns\AutoAddressBook\AutoAddressBook.ini
+    PlugIns\AutoAddressBook\AutoAddressBookImpl.dll
+    PlugIns\AutoAddressBook\AutoAddressBookImpl.pdb
+    PlugIns\AutoAddressBook\BeckyApi.dll"
+    PlugIns\AutoAddressBook\BeckyApi.pdb"
+    PlugIns\AutoAddressBook\BeckyTypes.dll"
+    PlugIns\AutoAddressBook\BeckyTypes.pdb"
+    PlugIns\AutoAddressBook\INIFileParser.dll"
+    PlugIns\AutoAddressBook\INIFileParser.xml"
+    PlugIns\AutoAddressBook\MimeKitLite.dll"
+    PlugIns\AutoAddressBook\MimeKitLite.xml"
+    PlugIns\AutoAddressBook\nlog.config"
+    PlugIns\AutoAddressBook\NLog.dll"
+    PlugIns\AutoAddressBook\NLog.xml"
+    PlugIns\AutoAddressBook\PInvoke.Kernel32.dll"
+    PlugIns\AutoAddressBook\PInvoke.Kernel32.xml"
+    PlugIns\AutoAddressBook\PInvoke.User32.dll"
+    PlugIns\AutoAddressBook\PInvoke.User32.xml"
+    PlugIns\AutoAddressBook\PInvoke.Windows.Core.dll"
+    PlugIns\AutoAddressBook\PInvoke.Windows.Core.xml"
+    PlugIns\AutoAddressBook\Utilities.dll"
+    PlugIns\AutoAddressBook\Utilities.pdb"
+    PlugIns\AutoAddressBook\Validation.dll"
+    PlugIns\AutoAddressBook\Validation.xml"
+
+    PlugIns\AutoAddressBook.dll
+    PlugIns\AutoAddressBook.dll.config
+    PlugIns\AutoAddressBook.pdb
+
+
 # Known caveats
 I need to manually update the address book files (append a vcard). This may interact with open address book windows.
 Apparently, this seems to be quite unproblematic (append data to the file while running Becky Addressbook and adding addresses there as well), 
@@ -32,6 +73,9 @@ The addresses are only known to your Becky! autocompletion list after opening th
    * ModuleInit.Fody
    * MimeKit (Github, parsing mail messages)
    * ini-parser
+
+ * I got it working in Visual Studio 2019 Community as well. 
+   However, the compiling seems not 100% stable, probably because of some timing issue with DllExport at initial build. The resulting DLLs are stable, though.
 
 # The structure of the plugin project
   * There are two projects: 
