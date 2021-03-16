@@ -50,8 +50,8 @@ namespace BeckyApi.AddressBook {
                 // Ldap address book
                 return new LdapAddressBook(addressBook, initialPath);
             } else if (addressBook.StartsWith("^")) {
-                // probably Google address book (^Google), but I do not know
-                return new UnknownAddressBook(addressBook, initialPath);
+                // CardDav address book (e.g. ^Google)
+                return new CardDavAddressBook(addressBook, initialPath);
             }
             // so that it is not chooseable
             return new UnknownAddressBook(addressBook, initialPath);
