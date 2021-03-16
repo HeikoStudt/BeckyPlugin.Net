@@ -134,7 +134,7 @@ data.
             var factory = new AddressBookFactory(DataFolder);
             AbstractAddressBook addressBookObject = factory.GetAddressBook(addressBook);
             var beckyAddressBook = (addressBookObject as BeckyAddressBook);
-            if (beckyAddressBook == null) {
+            if (beckyAddressBook == null || !beckyAddressBook.Chooseable) {
                 return null;
             }
             var group = beckyAddressBook.GetGroup(groupPath);

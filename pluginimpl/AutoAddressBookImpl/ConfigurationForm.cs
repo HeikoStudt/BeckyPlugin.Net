@@ -45,7 +45,10 @@ namespace AutoAddressBookImpl {
 
             cbAddressBook.Items.Clear();
             foreach (var addrBook in addressBooks) {
-                cbAddressBook.Items.Add(addrBook);
+                // disabled item would be nice...
+                if (addrBook.Chooseable) {
+                    cbAddressBook.Items.Add(addrBook);
+                }
             }
 
             var selected = addressBooks.FirstOrDefault(x => x.Name == defaultAddressBook);

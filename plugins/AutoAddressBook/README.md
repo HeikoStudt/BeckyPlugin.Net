@@ -10,7 +10,7 @@ This plugin takes all addresses in To, Cc, Bcc and Rcc of a outgoing message and
 Upon opening this address book once, you can use those addresses for autocompletion.
 
 # How/Where to intall the DLLs to?
-Currently, you will find the compiled DLLs in [AutoAddressBook_1.0.0.zip](https://github.com/HeikoStudt/BeckyPlugin.Net/blob/addressbook-build/plugins/AutoAddressBook/AutoAddressBook_1.0.0.zip).
+Currently, you will find the compiled DLLs in [AutoAddressBook_1.0.1.zip](https://github.com/HeikoStudt/BeckyPlugin.Net/blob/addressbook-build/plugins/AutoAddressBook/AutoAddressBook_1.0.1.zip).
 Please note, that I do not give any warranty on it, my recommendation is to build the DLLs yourself.
 
 I recommend to install the plugin to the data folder with the following structure.

@@ -49,9 +49,12 @@ namespace BeckyApi.AddressBook {
             } else if (addressBook.StartsWith("~")) {
                 // Ldap address book
                 return new LdapAddressBook(addressBook, initialPath);
+            } else if (addressBook.StartsWith("^")) {
+                // CardDav address book (e.g. ^Google)
+                return new CardDavAddressBook(addressBook, initialPath);
             }
-            // throw?
-            return null;
+            // so that it is not chooseable
+            return new UnknownAddressBook(addressBook, initialPath);
         }
     }
 }

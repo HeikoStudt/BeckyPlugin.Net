@@ -3,13 +3,15 @@
 namespace BeckyApi.AddressBook {
     public abstract class AbstractAddressBook {
 
-        public AbstractAddressBook(string addrBook, string initialPath) {
+        public AbstractAddressBook(string addrBook, string initialPath, bool chooseable) {
             Name = addrBook;
             InitialPath = initialPath;
+            Chooseable = chooseable;
         }
 
         public string Name { get; }
         public string InitialPath { get; }
+        public bool Chooseable { get; }
         public abstract IEnumerable<string> GroupPathes { get; }
 
         public abstract IEnumerable<string> GetEmailAddresses();
