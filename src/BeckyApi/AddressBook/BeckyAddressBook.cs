@@ -7,7 +7,7 @@ namespace BeckyApi.AddressBook {
     public class BeckyAddressBook : AbstractAddressBook {
 
         public BeckyAddressBook(string addrBook, string initialPath) 
-            : base(addrBook, initialPath) {
+            : base(addrBook, initialPath, true) {
         }
 
         public string FollowedPath => FollowBeckyAddressBookPath(InitialPath); // evaluate each time anew

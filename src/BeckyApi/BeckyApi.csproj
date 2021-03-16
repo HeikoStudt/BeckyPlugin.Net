@@ -44,6 +44,7 @@
     <Compile Include="AddressBook\AddressBookFactory.cs" />
     <Compile Include="AddressBook\BeckyAddressBook.cs" />
     <Compile Include="AddressBook\BeckyAddressBookGroup.cs" />
+    <Compile Include="AddressBook\UnknownAddressBook.cs" />
     <Compile Include="AddressBook\LdapAddressBook.cs" />
     <Compile Include="Enums\BeckyCmdUI.cs" />
     <Compile Include="Enums\BeckyMenu.cs" />
